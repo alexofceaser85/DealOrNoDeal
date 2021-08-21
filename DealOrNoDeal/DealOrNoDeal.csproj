@@ -126,6 +126,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ErrorMessages\BriefcaseErrorMessages.cs" />
+    <Compile Include="Model\Briefcase.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="View\DealOrNoDealPage.xaml.cs">
       <DependentUpon>DealOrNoDealPage.xaml</DependentUpon>
