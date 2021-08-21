@@ -22,8 +22,8 @@ namespace DealOrNoDeal.Model
         /// </summary>
         ///
         /// <precondition>
-        /// briefcaseId &>= 0
-        /// dollarAmount &>= 0 
+        /// briefcaseId &gt;= 0
+        /// dollarAmount &gt;= 0 
         /// </precondition>
         ///
         /// <postcondition>
