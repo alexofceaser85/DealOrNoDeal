@@ -3,6 +3,7 @@
     /// <summary>Handles the management of the actual game play.</summary>
     public class GameManager
     {
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameManager"/> class.
@@ -11,6 +12,10 @@
         {
 
         }
+
+        #endregion
+
+        #region Methods 
 
         /// <summary>
         ///     Removes the specified briefcase from play.
@@ -47,5 +52,6 @@
             // TODO Complete this method according to its specification
         }
 
+        #endregion
     }
 }
