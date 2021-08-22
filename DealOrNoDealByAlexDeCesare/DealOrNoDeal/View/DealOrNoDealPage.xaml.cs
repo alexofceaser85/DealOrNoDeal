@@ -6,6 +6,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using DealOrNoDeal.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -18,10 +19,13 @@ namespace DealOrNoDeal.View
     {
         #region Constructors
 
+        private readonly GameManager theGameManager;
+
         public DealOrNoDealPage()
         {
             InitializeComponent();
             initializeUiDataAndControls();
+            theGameManager = new GameManager();
         }
 
         #endregion
@@ -135,15 +139,11 @@ namespace DealOrNoDeal.View
 
         private void briefcase_Click(object sender, RoutedEventArgs e)
         {
-            // TODO The sender variable holds the button object that was clicked;
-            // assign the sender variable to a variable of type Button
-
-            // TODO Set the button (briefcase) to not be enabled and its visibility to collapsed
-
-            // TODO Get the ID of the briefcase that was clicked (hint: use the getBriefCaseID method)
-
-            // TODO Call GameManager::RemoveBriefCaseFromPlay to remove the brief case from the current cases in play
-            // Gray out the corresponding game amount label
+            var senderButton = (Button)sender;
+            senderButton.IsEnabled = false;
+            var briefcaseId = getBriefcaseID(senderButton);
+            var removedBriefcaseValue = theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
+            findAndGrayOutGameDollarLabel(removedBriefcaseValue);
         }
 
         private void findAndGrayOutGameDollarLabel(int amount)
@@ -172,9 +172,9 @@ namespace DealOrNoDeal.View
 
         private int getBriefcaseID(Button selectedBriefCase)
         {
+            return (int)selectedBriefCase.Tag;
             // TODO return the integer value (ID) stored in the Button's Tag property.
             // HINT A type cast will be needed
-            return -1;
         }
 
         private void updateCurrentRoundInformation()
