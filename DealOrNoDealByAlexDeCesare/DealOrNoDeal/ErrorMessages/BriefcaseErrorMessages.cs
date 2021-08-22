@@ -8,11 +8,23 @@
         /// <summary>
         ///     The brief case identifier cannot be zero or less
         /// </summary>
-        public const string BriefCaseIdCannotBeZeroOrLess = "The brief case Id cannot be less than zero";
+        public const string BriefCaseIdCannotBeLessThanZero = "The brief case Id cannot be less than zero";
 
         /// <summary>
         ///     The dollar amount cannot be less than zero
         /// </summary>
         public const string DollarAmountCannotBeLessThanZero = "The dollar amount cannot be less than zero";
+
+        /// <summary>
+        /// The cannot set briefcase identifier to less than zero
+        /// </summary>
+        public const string CannotSetBriefcaseIdToLessThanZero =
+            "The briefcase Id cannot be set to a value less than zero";
+
+        /// <summary>
+        /// The cannot set dollar amount to less than zero
+        /// </summary>
+        public const string CannotSetDollarAmountToLessThanZero =
+            "The dollar amount for a briefcase cannot be set to a value less than zero";
     }
 }

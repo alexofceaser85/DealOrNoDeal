@@ -8,6 +8,44 @@ namespace DealOrNoDeal.Model
     /// </summary>
     public class Briefcase
     {
+        private int briefcaseId;
+        private int dollarAmount;
+
+        /// <summary>
+        ///     The briefcase identifier.
+        /// </summary>
+        public int BriefcaseId
+        {
+            get => briefcaseId;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(BriefcaseErrorMessages
+                        .CannotSetBriefcaseIdToLessThanZero);
+                }
+                briefcaseId = value;
+            }
+        }
+
+        /// <summary>
+        ///     The dollar amount
+        /// </summary>
+        public int DollarAmount
+        {
+            get => dollarAmount;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(
+                        BriefcaseErrorMessages.CannotSetDollarAmountToLessThanZero);
+                }
+
+                dollarAmount = value;
+            }
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Briefcase" /> class.
         /// </summary>
@@ -23,22 +61,12 @@ namespace DealOrNoDeal.Model
         /// <param name="dollarAmount">The dollar amount.</param>
         public Briefcase(int briefcaseId, int dollarAmount)
         {
-            if (briefcaseId < 0) throw new ArgumentException(BriefcaseErrorMessages.BriefCaseIdCannotBeZeroOrLess);
+            if (briefcaseId < 0) throw new ArgumentException(BriefcaseErrorMessages.BriefCaseIdCannotBeLessThanZero);
 
             if (dollarAmount < 0) throw new ArgumentException(BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero);
 
             BriefcaseId = briefcaseId;
             DollarAmount = dollarAmount;
         }
-
-        /// <summary>
-        ///     The briefcase identifier.
-        /// </summary>
-        public int BriefcaseId { get; set; }
-
-        /// <summary>
-        ///     The dollar amount
-        /// </summary>
-        public int DollarAmount { get; set; }
     }
 }
