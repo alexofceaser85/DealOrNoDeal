@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace DealOrNoDeal.Model
 {
@@ -15,7 +16,7 @@ namespace DealOrNoDeal.Model
             200000, 300000, 400000, 500000, 750000, 1000000
         };
 
-        private readonly IList<Briefcase> theBriefcases;
+        private IList<Briefcase> theBriefcases;
 
         private const int InitialCurrentRound = 1;
         private const int InitialCasesLeftForCurrentRound = 6;
@@ -24,41 +25,130 @@ namespace DealOrNoDeal.Model
         private const int InitialBankerMinimumOffer = int.MaxValue;
         private const int InitialBankerMaximumOffer = int.MinValue;
 
+        private int currentRound;
+        private int casesLeftForCurrentRound;
+        private int playerSelectedStartingCase;
+        private int bankerCurrentOffer;
+        private int bankerMinimumOffer;
+        private int bankerMaximumOffer;
+
         /// <summary>
         ///     Gets or sets the current round.
         /// </summary>
         /// <value>The current round.</value>
-        public int CurrentRound { get; set; }
+        public int CurrentRound {
+            get => currentRound;
+            set
+            {
+                if (value < 1)
+                {
+                    throw new ArgumentException(
+                        ErrorMessages.GameManagerErrorMessages.ShouldNotSetCurrentRoundToLessThanOne);
+                }
+
+                currentRound = value;
+            } }
 
         /// <summary>
         ///     Gets or sets the cases left for current round.
         /// </summary>
         /// <value>The cases left for current round.</value>
-        public int CasesLeftForCurrentRound { get; set; }
+        public int CasesLeftForCurrentRound
+        {
+            get => casesLeftForCurrentRound;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetCasesLeftForCurrentRoundToLessThanZero);
+                }
+
+                casesLeftForCurrentRound = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the player selected starting case.
         /// </summary>
         /// <value>The player selected starting case.</value>
-        public int PlayerSelectedStartingCase { get; set; }
+        public int PlayerSelectedStartingCase { 
+            get => playerSelectedStartingCase;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetPlaySelectedStartingCaseToLessThanZero);
+                }
+
+                playerSelectedStartingCase = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the banker current offer.
         /// </summary>
         /// <value>The banker current offer.</value>
-        public int BankerCurrentOffer { get; set; }
+        public int BankerCurrentOffer
+        {
+            get => bankerCurrentOffer;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetBankerCurrentOfferToLessThanZero);
+                }
+
+                bankerCurrentOffer = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the minimum banker offer.
         /// </summary>
         /// <value>The minimum banker offer.</value>
-        public int MinimumBankerOffer { get; set; }
+        public int BankerMinimumOffer { get => bankerMinimumOffer;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetBankerMinimumOfferToLessThanZero);
+                }
+
+                if (value > BankerMaximumOffer && BankerMaximumOffer != InitialBankerMaximumOffer)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetBankerMinimumOfferToMoreThanMaximumOffer);
+                }
+
+                bankerMinimumOffer = value;
+            } }
 
         /// <summary>
         ///     Gets or sets the maximum banker offer.
         /// </summary>
         /// <value>The maximum banker offer.</value>
-        public int MaximumBankerOffer { get; set; }
+        public int BankerMaximumOffer { get => bankerMaximumOffer;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetBankerMaximumOfferToLessThanZero);
+                }
+
+                if (value < BankerMinimumOffer && BankerMinimumOffer != InitialBankerMinimumOffer)
+                {
+                    throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                        .ShouldNotSetBankerMaximumOfferToLessThanMinimumOffer);
+                }
+
+                bankerMaximumOffer = value;
+            }
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
@@ -72,20 +162,19 @@ namespace DealOrNoDeal.Model
         ///     this.CasesLeftForCurrentRound == this.InitialCasesLeftForCurrentRound;
         ///     this.PlayerSelectedStartingCase == this.InitialPlayerSelectedStartingCase;
         ///     this.BankerCurrentOffer == this.InitialBankerCurrentOffer;
-        ///     this.MinimumBankerOffer == this.InitialBankerMinimumOffer;
-        ///     this.MaximumBankerOffer == this.InitialBankerMaximumOffer;
+        ///     this.BankerMinimumOffer == this.InitialBankerMinimumOffer;
+        ///     this.BankerMaximumOffer == this.InitialBankerMaximumOffer;
         /// </postcondition>
         public GameManager()
         {
-            theBriefcases = new List<Briefcase>();
             PopulateBriefcases(GetRandomIndexesToAccessDollarValues(briefCaseDollarAmounts.Count, 0,
-                briefCaseDollarAmounts.Count));
+                briefCaseDollarAmounts.Count), briefCaseDollarAmounts);
             CurrentRound = InitialCurrentRound;
             CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
             PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
             BankerCurrentOffer = InitialBankerCurrentOffer;
-            MinimumBankerOffer = InitialBankerMinimumOffer;
-            MaximumBankerOffer = InitialBankerMaximumOffer;
+            this.bankerMinimumOffer = InitialBankerMinimumOffer;
+            this.bankerMaximumOffer = InitialBankerMaximumOffer;
         }
 
         /// <summary>
@@ -93,21 +182,39 @@ namespace DealOrNoDeal.Model
         /// </summary>
         ///
         /// <precondition>
-        /// none
+        /// indexesOfDollarValuesToPopulate != null
+        /// dollarValuesToPopulate != null
         /// </precondition>
         ///
         /// <postcondition>
         /// this.theBriefcases.Count == this.indexesOfDollarValuesToPopulate.Length
         /// </postcondition>
-        /// <param name="indexesOfDollarValuesToPopulate">The index of the array element from the briefCaseDollarAmounts to associate with the briefcase</param>
-        public void PopulateBriefcases(IList<int> indexesOfDollarValuesToPopulate)
+        /// <param name="indexesOfDollarValuesToPopulate">The index of the array element which is used to get a value from the dollar values</param>
+        /// <param name="dollarValuesToPopulate">The dollar values which are to be accessed</param>
+        public void PopulateBriefcases(IList<int> indexesOfDollarValuesToPopulate, IList<int> dollarValuesToPopulate)
         {
+            if (indexesOfDollarValuesToPopulate == null)
+            {
+                throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                    .ShouldNotPopulateBriefcasesIfIndexesOfDollarValuesAreNull);
+            }
+
+            if (dollarValuesToPopulate == null)
+            {
+                throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
+                    .ShouldNotPopulateBriefcasesIfDollarValuesAreNull);
+            }
+
+            IList<Briefcase> thePopulatedBriefcases = new List<Briefcase>();
+
             for (var counter = 0; counter < indexesOfDollarValuesToPopulate.Count; counter++)
             {
                 var currentDollarAmountIndex = indexesOfDollarValuesToPopulate[counter];
-                var newBriefcase = new Briefcase(counter, briefCaseDollarAmounts[currentDollarAmountIndex]);
-                theBriefcases.Add(newBriefcase);
+                var newBriefcase = new Briefcase(counter, dollarValuesToPopulate[currentDollarAmountIndex]);
+                thePopulatedBriefcases.Add(newBriefcase);
             }
+
+            theBriefcases = thePopulatedBriefcases;
         }
 
         #endregion
@@ -132,9 +239,8 @@ namespace DealOrNoDeal.Model
         {
             var theSelectedBriefcase = GetBriefcaseById(briefcaseIdToGet);
 
-            if (theSelectedBriefcase != null) return theSelectedBriefcase.DollarAmount;
-
-            return -1;
+            if (theSelectedBriefcase == null) return -1;
+            return theSelectedBriefcase.DollarAmount;
         }
 
         /// <summary>
@@ -179,38 +285,6 @@ namespace DealOrNoDeal.Model
         public void MoveToNextRound()
         {
             // TODO Complete this method according to its specification
-        }
-
-        /// <summary>
-        /// Returns the string representation of the game manager
-        /// </summary>
-        ///
-        /// <precondition>
-        /// none
-        /// </precondition>
-        /// <postcondition>
-        /// none
-        /// </postcondition>
-        /// 
-        /// <returns>The string representation of the game manager</returns>
-        public override string ToString()
-        {
-            var gameManagerString = $"A game manager with the following information:\n"
-                                       + $"current round: {CurrentRound}\n"
-                                       + $"cases left for current round: {CasesLeftForCurrentRound}\n"
-                                       + $"player selected starting case: {PlayerSelectedStartingCase}\n"
-                                       + $"banker current offer: {BankerCurrentOffer}\n"
-                                       + $"minimum banker offer: {MinimumBankerOffer}\n"
-                                       + $"maximum banker offer: {MaximumBankerOffer}\n"
-                                       + $"---And the following briefcases---";
-
-            foreach (var briefcase in this.theBriefcases)
-            {
-                gameManagerString +=
-                    $"A briefcase with an ID: {briefcase.BriefcaseId} and dollar amount {briefcase.DollarAmount}\n";
-            }
-
-            return gameManagerString;
         }
 
         private Briefcase GetBriefcaseById(int briefcaseIdToGet)
