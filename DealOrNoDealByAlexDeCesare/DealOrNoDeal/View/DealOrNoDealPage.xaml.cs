@@ -140,7 +140,7 @@ namespace DealOrNoDeal.View
         private void briefcase_Click(object sender, RoutedEventArgs e)
         {
             var senderButton = (Button)sender;
-            senderButton.IsEnabled = false;
+            senderButton.Visibility = Visibility.Collapsed;
             var briefcaseId = getBriefcaseID(senderButton);
             var removedBriefcaseValue = theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
             findAndGrayOutGameDollarLabel(removedBriefcaseValue);
