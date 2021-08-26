@@ -191,6 +191,12 @@ namespace DealOrNoDeal.Tests.BriefcaseTests
             briefcase.DollarAmount = 1000;
             Assert.AreEqual(1000, briefcase.DollarAmount);
         }
+
+        [TestMethod]
+        public void ShouldSetTotalBriefcaseDollarAmounts()
+        {
+
+        }
     }
 
 }
