@@ -180,6 +180,7 @@ namespace DealOrNoDeal.Model
             BankerCurrentOffer = InitialBankerCurrentOffer;
             this.bankerMinimumOffer = InitialBankerMinimumOffer;
             this.bankerMaximumOffer = InitialBankerMaximumOffer;
+            this.CasesLeftInGame = this.briefCaseDollarAmounts.Count;
         }
 
         /// <summary>
@@ -265,8 +266,13 @@ namespace DealOrNoDeal.Model
             var briefcaseToRemove = GetBriefcaseById(id);
             if (briefcaseToRemove == null) return -1;
 
-            this.TotalBriefCaseDollarAmountInPlay =- briefcaseToRemove.DollarAmount;
+            this.TotalBriefCaseDollarAmountInPlay -= briefcaseToRemove.DollarAmount;
             this.CasesLeftInGame--;
+            if (this.CasesLeftForCurrentRound > 0)
+            {
+                this.CasesLeftForCurrentRound--;
+            }
+
             theBriefcases.Remove(GetBriefcaseById(id));
             return briefcaseToRemove.DollarAmount;
         }
@@ -286,9 +292,16 @@ namespace DealOrNoDeal.Model
             //{
             //    casesLeftForTheNextRound = this.CasesLeftForCurrentRound;
             //}
-
-            return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, this.CasesLeftForCurrentRound,
-                this.CasesLeftInGame);
+            if (this.CasesLeftForCurrentRound > 0)
+            {
+                return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, this.CasesLeftForCurrentRound,
+                    this.CasesLeftInGame);
+            }
+            else
+            {
+                return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, 1,
+                    this.CasesLeftInGame);
+            }
         }
 
         /// <summary>
@@ -300,7 +313,10 @@ namespace DealOrNoDeal.Model
         public void MoveToNextRound()
         {
             this.CurrentRound++;
-            this.InitialCasesLeftForCurrentRound--;
+            if (this.InitialCasesLeftForCurrentRound > 0)
+            {
+                this.InitialCasesLeftForCurrentRound--;
+            }
             this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
         }
 

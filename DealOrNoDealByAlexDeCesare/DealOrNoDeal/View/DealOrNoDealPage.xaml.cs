@@ -180,17 +180,13 @@ namespace DealOrNoDeal.View
 
         private void updateCurrentRoundInformation()
         {
-            this.casesToOpenLabel.Text = this.theGameManager.CasesLeftForCurrentRound.ToString();
-            this.roundLabel.Text = this.theGameManager.CurrentRound.ToString();
+            this.casesToOpenLabel.Text = "The cases to open: " + this.theGameManager.CasesLeftForCurrentRound.ToString();
+            this.roundLabel.Text = "The current round: " + this.theGameManager.CurrentRound.ToString();
 
-            if (this.theGameManager.CasesLeftForCurrentRound == 1)
+            if (this.theGameManager.CasesLeftForCurrentRound == 0)
             {
                 this.theGameManager.MoveToNextRound();
                 this.summaryOutput.Text = this.theGameManager.GetOffer().ToString();
-            }
-            else
-            {
-                this.theGameManager.CasesLeftForCurrentRound--;
             }
 
             // TODO This method will need to update the text for the information labels
