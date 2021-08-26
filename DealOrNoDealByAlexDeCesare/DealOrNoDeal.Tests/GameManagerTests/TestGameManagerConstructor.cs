@@ -459,5 +459,12 @@ namespace DealOrNoDeal.Tests.GameManagerTests
             Assert.AreEqual(100, gameManager.BankerMinimumOffer);
             Assert.AreEqual(200, gameManager.BankerMaximumOffer);
         }
+
+        [TestMethod]
+        public void ShouldCalculateTotalBriefCaseDollarAmounts()
+        {
+            var gameManager = new GameManager();
+            Assert.AreEqual(3418416, gameManager.TotalBriefCaseDollarAmountInPlay);
+        }
     }
 }

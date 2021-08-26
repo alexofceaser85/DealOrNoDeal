@@ -19,7 +19,7 @@ namespace DealOrNoDeal.Model
         private IList<Briefcase> theBriefcases;
 
         private const int InitialCurrentRound = 1;
-        private const int InitialCasesLeftForCurrentRound = 6;
+        private int InitialCasesLeftForCurrentRound = 6;
         private const int InitialPlayerSelectedStartingCase = 1;
         private const int InitialBankerCurrentOffer = 0;
         private const int InitialBankerMinimumOffer = int.MaxValue;
@@ -31,6 +31,9 @@ namespace DealOrNoDeal.Model
         private int bankerCurrentOffer;
         private int bankerMinimumOffer;
         private int bankerMaximumOffer;
+
+        public int TotalBriefCaseDollarAmountInPlay { get; private set; }
+        public int CasesLeftInGame { get; private set; }
 
         /// <summary>
         ///     Gets or sets the current round.
@@ -158,6 +161,7 @@ namespace DealOrNoDeal.Model
         /// </precondition>
         /// <postcondition>
         ///     this.theBriefcases.Length == 26
+        ///     this.CalculateTotalBriefcaseDollarAmounts == Sum of each int in briefCaseDollarAmounts
         ///     this.CurrentRound == this.InitialCurrentRound;
         ///     this.CasesLeftForCurrentRound == this.InitialCasesLeftForCurrentRound;
         ///     this.PlayerSelectedStartingCase == this.InitialPlayerSelectedStartingCase;
@@ -167,8 +171,9 @@ namespace DealOrNoDeal.Model
         /// </postcondition>
         public GameManager()
         {
-            PopulateBriefcases(GetRandomIndexesToAccessDollarValues(briefCaseDollarAmounts.Count, 0,
+            this.PopulateBriefcases(GetRandomIndexesToAccessDollarValues(briefCaseDollarAmounts.Count, 0,
                 briefCaseDollarAmounts.Count), briefCaseDollarAmounts);
+            this.TotalBriefCaseDollarAmountInPlay = this.CalculateTotalBriefcaseDollarAmounts();
             CurrentRound = InitialCurrentRound;
             CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
             PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
@@ -260,6 +265,8 @@ namespace DealOrNoDeal.Model
             var briefcaseToRemove = GetBriefcaseById(id);
             if (briefcaseToRemove == null) return -1;
 
+            this.TotalBriefCaseDollarAmountInPlay =- briefcaseToRemove.DollarAmount;
+            this.CasesLeftInGame--;
             theBriefcases.Remove(GetBriefcaseById(id));
             return briefcaseToRemove.DollarAmount;
         }
@@ -270,10 +277,18 @@ namespace DealOrNoDeal.Model
         /// <returns></returns>
         public int GetOffer()
         {
-            // TODO Collaborates with the banker class to get and return the amount of the offer after the round has completed.
-            //      Note: You will need to figure out the number of cases to open in the next round and once you have
-            //
-            return -1;
+            //int casesLeftForTheNextRound;
+            //if (this.CasesLeftForCurrentRound > 1)
+            //{
+            //    casesLeftForTheNextRound = this.CasesLeftForCurrentRound--;
+            //}
+            //else
+            //{
+            //    casesLeftForTheNextRound = this.CasesLeftForCurrentRound;
+            //}
+
+            return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, this.CasesLeftForCurrentRound,
+                this.CasesLeftInGame);
         }
 
         /// <summary>
@@ -284,7 +299,21 @@ namespace DealOrNoDeal.Model
         /// </summary>
         public void MoveToNextRound()
         {
-            // TODO Complete this method according to its specification
+            this.CurrentRound++;
+            this.InitialCasesLeftForCurrentRound--;
+            this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
+        }
+
+        private int CalculateTotalBriefcaseDollarAmounts()
+        {
+            var totalBriefcaseDollarAmounts = 0;
+
+            foreach (var briefcaseDollarAmount in this.briefCaseDollarAmounts)
+            {
+                totalBriefcaseDollarAmounts += briefcaseDollarAmount;
+            }
+
+            return totalBriefcaseDollarAmounts;
         }
 
         private Briefcase GetBriefcaseById(int briefcaseIdToGet)

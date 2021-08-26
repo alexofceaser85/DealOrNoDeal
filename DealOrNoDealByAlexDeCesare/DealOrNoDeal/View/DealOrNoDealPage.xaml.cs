@@ -144,6 +144,7 @@ namespace DealOrNoDeal.View
             var briefcaseId = getBriefcaseID(senderButton);
             var removedBriefcaseValue = theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
             findAndGrayOutGameDollarLabel(removedBriefcaseValue);
+            this.updateCurrentRoundInformation();
         }
 
         private void findAndGrayOutGameDollarLabel(int amount)
@@ -179,6 +180,19 @@ namespace DealOrNoDeal.View
 
         private void updateCurrentRoundInformation()
         {
+            this.casesToOpenLabel.Text = this.theGameManager.CasesLeftForCurrentRound.ToString();
+            this.roundLabel.Text = this.theGameManager.CurrentRound.ToString();
+
+            if (this.theGameManager.CasesLeftForCurrentRound == 1)
+            {
+                this.theGameManager.MoveToNextRound();
+                this.summaryOutput.Text = this.theGameManager.GetOffer().ToString();
+            }
+            else
+            {
+                this.theGameManager.CasesLeftForCurrentRound--;
+            }
+
             // TODO This method will need to update the text for the information labels
             //       to display the current round and cases to open, as well as, the number of cases
             //       left to open for this round
