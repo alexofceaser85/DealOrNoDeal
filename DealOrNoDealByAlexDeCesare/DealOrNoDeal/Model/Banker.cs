@@ -20,7 +20,8 @@ namespace DealOrNoDeal.Model
         /// <returns></returns>
         public static int CalculateBankerOffer(int dollarAmountsInPlay, int numberOfCasesToOpenInNextRound, int numberOfCasesRemainingInGame)
         {
-            return dollarAmountsInPlay / numberOfCasesToOpenInNextRound / numberOfCasesRemainingInGame;
+            var unRoundedBankerOffer = (double) dollarAmountsInPlay / numberOfCasesToOpenInNextRound / numberOfCasesRemainingInGame;
+            return (int) Math.Round(unRoundedBankerOffer);
         }
     }
 }

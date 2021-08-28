@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Windows.Foundation;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -17,6 +19,10 @@ namespace DealOrNoDeal.View
     /// </summary>
     public sealed partial class DealOrNoDealPage
     {
+        private string formattedBankerCurrentOffer;
+        private string formattedBankerMinimumOffer;
+        private string formattedBankerMaximumOffer;
+
         #region Constructors
 
         private readonly GameManager theGameManager;
@@ -26,6 +32,22 @@ namespace DealOrNoDeal.View
             InitializeComponent();
             initializeUiDataAndControls();
             theGameManager = new GameManager();
+
+            this.dealButton.Visibility = Visibility.Collapsed;
+            this.noDealButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void updateFormattedBankerOffers()
+        {
+            this.theGameManager.GetOffer();
+            this.formattedBankerCurrentOffer = this.theGameManager.BankerCurrentOffer.ToString("C");
+            this.formattedBankerMinimumOffer = this.theGameManager.BankerMinimumOffer.ToString("C");
+            this.formattedBankerMaximumOffer = this.theGameManager.BankerMaximumOffer.ToString("C");
+        }
+
+        private string getFormattedBriefcaseValue(int indexToGet)
+        {
+            return this.theGameManager.GetBriefcaseValue(indexToGet).ToString("C");
         }
 
         #endregion
@@ -140,11 +162,26 @@ namespace DealOrNoDeal.View
         private void briefcase_Click(object sender, RoutedEventArgs e)
         {
             var senderButton = (Button)sender;
-            senderButton.Visibility = Visibility.Collapsed;
             var briefcaseId = getBriefcaseID(senderButton);
-            var removedBriefcaseValue = theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
-            findAndGrayOutGameDollarLabel(removedBriefcaseValue);
-            this.updateCurrentRoundInformation();
+            senderButton.Visibility = Visibility.Collapsed;
+
+            if (this.theGameManager.PlayerSelectedStartingCase == -1)
+            {
+                this.theGameManager.PlayerSelectedStartingCase = briefcaseId;
+                this.briefcaseButtons.Remove(senderButton);
+                this.summaryOutput.Text = $"Your case: {this.theGameManager.PlayerSelectedStartingCase + 1}";
+
+                this.roundLabel.Text = $"Round {this.theGameManager.CurrentRound.ToString()}: {this.theGameManager.CasesAvailableForRound} cases to open";
+                this.casesToOpenLabel.Text = $"{this.theGameManager.CasesLeftForCurrentRound.ToString()} more cases to open";
+            } 
+            else
+            {
+                var removedBriefcaseValue = theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
+                this.briefcaseButtons.Remove(senderButton);
+                this.theGameManager.CasesLeftForCurrentRound--;
+                this.updateCurrentRoundInformation();
+                findAndGrayOutGameDollarLabel(removedBriefcaseValue);
+            }
         }
 
         private void findAndGrayOutGameDollarLabel(int amount)
@@ -180,13 +217,53 @@ namespace DealOrNoDeal.View
 
         private void updateCurrentRoundInformation()
         {
-            this.casesToOpenLabel.Text = "The cases to open: " + this.theGameManager.CasesLeftForCurrentRound.ToString();
-            this.roundLabel.Text = "The current round: " + this.theGameManager.CurrentRound.ToString();
+            this.roundLabel.Text = $"Round {this.theGameManager.CurrentRound.ToString()}: {this.theGameManager.CasesAvailableForRound} cases to open";
+            this.casesToOpenLabel.Text = $"{this.theGameManager.CasesLeftForCurrentRound.ToString()} more cases to open";
 
             if (this.theGameManager.CasesLeftForCurrentRound == 0)
             {
-                this.theGameManager.MoveToNextRound();
-                this.summaryOutput.Text = this.theGameManager.GetOffer().ToString();
+                this.updateFormattedBankerOffers();
+            }
+
+            if (this.theGameManager.CurrentRound == 10)
+            {
+                this.casesToOpenLabel.Text = "Select a case below";
+                this.roundLabel.Text = "This is the final round";
+                this.summaryOutput.Text =
+                    $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n";
+
+                this.dealButton.Visibility = Visibility.Visible;
+                this.noDealButton.Visibility = Visibility.Visible;
+
+                this.dealButton.Content = (int) this.briefcaseButtons[0].Tag + 1;
+                this.noDealButton.Content = (int) this.theGameManager.PlayerSelectedStartingCase + 1;
+
+                this.dealButton.Tag = (int)this.briefcaseButtons[0].Tag;
+                this.noDealButton.Tag = (int)this.theGameManager.PlayerSelectedStartingCase;
+
+                this.collapseBriefcaseButtons();
+            } 
+            else if (this.theGameManager.CasesLeftForCurrentRound == 0)
+            {
+                this.summaryOutput.Text =
+                    $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n"
+                    + $"Current offer: {this.formattedBankerCurrentOffer}\n"
+                    + "Deal or No Deal?";
+
+                this.dealButton.Visibility = Visibility.Visible;
+                this.noDealButton.Visibility = Visibility.Visible;
+
+                foreach (Button briefcaseButton in briefcaseButtons)
+                {
+                    briefcaseButton.IsEnabled = false;
+                }
+            }
+            else
+            {
+                foreach (Button briefcaseButton in briefcaseButtons)
+                {
+                    briefcaseButton.IsEnabled = true;
+                }
             }
 
             // TODO This method will need to update the text for the information labels
@@ -196,24 +273,76 @@ namespace DealOrNoDeal.View
             // TODO If a round is complete, then collaborate with the GameManager to get the banker's offer and display the appropriate text in the summaryOutput
         }
 
+        private void collapseBriefcaseButtons()
+        {
+            foreach (Button briefcaseButton in briefcaseButtons)
+            {
+                briefcaseButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void dealButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Complete this method to output the information when the player accepts the Banker's deal
-            // Check for instance of last round, as in the last round the deal button
-            // displays the player's case value
+            if (this.theGameManager.CurrentRound == 10)
+            {
+                this.dealButton.Visibility = Visibility.Collapsed;
+                this.noDealButton.Visibility = Visibility.Collapsed;
+
+                int playerStartingCase = this.theGameManager.PlayerSelectedStartingCase;
+                this.summaryOutput.Text =
+                    $"Congrats you win: {this.getFormattedBriefcaseValue((int) this.dealButton.Tag)}\n"
+                    + "\n"
+                    + "GAME OVER";
+            }
+            else
+            {
+                this.dealButton.Visibility = Visibility.Collapsed;
+                this.noDealButton.Visibility = Visibility.Collapsed;
+
+                int playerStartingCase = this.theGameManager.PlayerSelectedStartingCase;
+                this.summaryOutput.Text =
+                    $"Your case contained: {this.getFormattedBriefcaseValue(playerStartingCase)}\n"
+                    + $"Accepted offer: {this.formattedBankerCurrentOffer}\n"
+                    + "GAME OVER";
+            }
         }
 
         private void noDealButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Handle the the selection of a case in the final round
-            // You may not want to worry about the final round code until this
-            // code can successfully move onto the next round
 
-            // TODO Otherwise, move to the next round (hint: method in GameManager class)
-            // and update summaryOutput information and the label information appropriately
-            // You will also need to handle the situation when advancing to the next round and the
-            // next round is the final round, so the text on the Deal and No Deal buttons will 
-            // need to change as detailed in the specifications
+            if (this.theGameManager.CurrentRound == 10)
+            {
+                this.dealButton.Visibility = Visibility.Collapsed;
+                this.noDealButton.Visibility = Visibility.Collapsed;
+
+                int playerStartingCase = this.theGameManager.PlayerSelectedStartingCase;
+                this.summaryOutput.Text =
+                    $"Congrats you win: {this.getFormattedBriefcaseValue((int) this.dealButton.Tag)}\n"
+
+                    + "\n"
+                    + "GAME OVER";
+            }
+            else
+            {
+                this.theGameManager.MoveToNextRound();
+                this.dealButton.Visibility = Visibility.Collapsed;
+                this.noDealButton.Visibility = Visibility.Collapsed;
+
+                this.updateCurrentRoundInformation();
+
+                if (this.theGameManager.CurrentRound != 10)
+                {
+                    foreach (Button briefcaseButton in briefcaseButtons)
+                    {
+                        briefcaseButton.Visibility = Visibility.Visible;
+                    }
+
+                    this.summaryOutput.Text =
+                        $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n"
+                        + $"Last offer: {this.formattedBankerCurrentOffer}\n";
+                }
+            }
+
         }
 
         #endregion

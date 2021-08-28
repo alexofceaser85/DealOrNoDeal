@@ -20,7 +20,7 @@ namespace DealOrNoDeal.Model
 
         private const int InitialCurrentRound = 1;
         private int InitialCasesLeftForCurrentRound = 6;
-        private const int InitialPlayerSelectedStartingCase = 1;
+        private const int InitialPlayerSelectedStartingCase = -1;
         private const int InitialBankerCurrentOffer = 0;
         private const int InitialBankerMinimumOffer = int.MaxValue;
         private const int InitialBankerMaximumOffer = int.MinValue;
@@ -34,6 +34,8 @@ namespace DealOrNoDeal.Model
 
         public int TotalBriefCaseDollarAmountInPlay { get; private set; }
         public int CasesLeftInGame { get; private set; }
+
+        public int CasesAvailableForRound { get; private set; }
 
         /// <summary>
         ///     Gets or sets the current round.
@@ -61,7 +63,7 @@ namespace DealOrNoDeal.Model
             get => casesLeftForCurrentRound;
             set
             {
-                if (value < 0)
+                if (value < -1)
                 {
                     throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
                         .ShouldNotSetCasesLeftForCurrentRoundToLessThanZero);
@@ -79,7 +81,7 @@ namespace DealOrNoDeal.Model
             get => playerSelectedStartingCase;
             set
             {
-                if (value < 0)
+                if (value < -1)
                 {
                     throw new ArgumentException(ErrorMessages.GameManagerErrorMessages
                         .ShouldNotSetPlaySelectedStartingCaseToLessThanZero);
@@ -174,13 +176,14 @@ namespace DealOrNoDeal.Model
             this.PopulateBriefcases(GetRandomIndexesToAccessDollarValues(briefCaseDollarAmounts.Count, 0,
                 briefCaseDollarAmounts.Count), briefCaseDollarAmounts);
             this.TotalBriefCaseDollarAmountInPlay = this.CalculateTotalBriefcaseDollarAmounts();
-            CurrentRound = InitialCurrentRound;
-            CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
-            PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
-            BankerCurrentOffer = InitialBankerCurrentOffer;
+            this.CurrentRound = InitialCurrentRound;
+            this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
+            this.PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
+            this.BankerCurrentOffer = InitialBankerCurrentOffer;
             this.bankerMinimumOffer = InitialBankerMinimumOffer;
             this.bankerMaximumOffer = InitialBankerMaximumOffer;
             this.CasesLeftInGame = this.briefCaseDollarAmounts.Count;
+            this.CasesAvailableForRound = InitialCasesLeftForCurrentRound;
         }
 
         /// <summary>
@@ -268,10 +271,6 @@ namespace DealOrNoDeal.Model
 
             this.TotalBriefCaseDollarAmountInPlay -= briefcaseToRemove.DollarAmount;
             this.CasesLeftInGame--;
-            if (this.CasesLeftForCurrentRound > 0)
-            {
-                this.CasesLeftForCurrentRound--;
-            }
 
             theBriefcases.Remove(GetBriefcaseById(id));
             return briefcaseToRemove.DollarAmount;
@@ -292,16 +291,29 @@ namespace DealOrNoDeal.Model
             //{
             //    casesLeftForTheNextRound = this.CasesLeftForCurrentRound;
             //}
+            int bankerOffer;
             if (this.CasesLeftForCurrentRound > 0)
             {
-                return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, this.CasesLeftForCurrentRound,
+                bankerOffer = Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, this.CasesLeftForCurrentRound,
                     this.CasesLeftInGame);
             }
             else
             {
-                return Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, 1,
+                bankerOffer = Banker.CalculateBankerOffer(this.TotalBriefCaseDollarAmountInPlay, 1,
                     this.CasesLeftInGame);
             }
+
+            this.BankerCurrentOffer = bankerOffer;
+            if (this.bankerMinimumOffer > bankerOffer)
+            {
+                this.bankerMinimumOffer = bankerOffer;
+            }
+
+            if (this.bankerMaximumOffer < bankerOffer)
+            {
+                this.bankerMaximumOffer = bankerOffer;
+            }
+            return bankerOffer;
         }
 
         /// <summary>
@@ -313,11 +325,11 @@ namespace DealOrNoDeal.Model
         public void MoveToNextRound()
         {
             this.CurrentRound++;
-            if (this.InitialCasesLeftForCurrentRound > 0)
+            if (this.CasesAvailableForRound > 1)
             {
-                this.InitialCasesLeftForCurrentRound--;
+                this.CasesAvailableForRound--;
             }
-            this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
+            this.CasesLeftForCurrentRound = this.CasesAvailableForRound;
         }
 
         private int CalculateTotalBriefcaseDollarAmounts()
