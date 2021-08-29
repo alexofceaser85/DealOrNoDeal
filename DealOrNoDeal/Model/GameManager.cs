@@ -5,7 +5,12 @@ using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
 {
-    /// <summary>Handles the management of the actual game play.</summary>
+    /// <summary>
+    /// Handles the management of the actual game play.
+    ///
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
+    /// </summary>
     public class GameManager
     {
         #region Data members

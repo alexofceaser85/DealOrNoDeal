@@ -4,7 +4,10 @@ using DealOrNoDeal.ErrorMessages;
 namespace DealOrNoDeal.Model
 {
     /// <summary>
-    ///     Holds the data for each briefcase
+    /// Holds the data for each briefcase
+    ///
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
     /// </summary>
     public class Briefcase
     {

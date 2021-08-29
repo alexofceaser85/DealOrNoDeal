@@ -5,6 +5,9 @@ namespace DealOrNoDeal.Model
 {
     /// <summary>
     /// Holds the data for the game banker
+    ///
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
     /// </summary>
     public class Banker
     {

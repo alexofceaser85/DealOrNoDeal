@@ -13,10 +13,10 @@ using DealOrNoDeal.Model;
 namespace DealOrNoDeal.View
 {
     /// <summary>
-    ///     An empty page that can be used on its own or navigated to within a Frame.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     ///
-    ///     Author: Alex DeCesare
-    ///     Version: 
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
     /// </summary>
     public sealed partial class DealOrNoDealPage
     {

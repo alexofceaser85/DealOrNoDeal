@@ -2,6 +2,9 @@
 {
     /// <summary>
     /// Holds the error messages for the game manager
+    ///
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
     /// </summary>
     public class GameManagerErrorMessages
     {

@@ -1,7 +1,10 @@
 ﻿namespace DealOrNoDeal.ErrorMessages
 {
     /// <summary>
-    ///     Holds the error messages for the Briefcase class.
+    /// Holds the error messages for the Briefcase class.
+    ///
+    /// Author: Alex DeCesare
+    /// Version: 31-August-2021
     /// </summary>
     public static class BriefcaseErrorMessages
     {
