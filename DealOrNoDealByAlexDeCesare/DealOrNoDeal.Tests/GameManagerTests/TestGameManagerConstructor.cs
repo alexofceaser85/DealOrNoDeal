@@ -12,16 +12,18 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldInitializeDefaultValues()
         {
             var gameManager = new GameManager();
+            Assert.AreEqual(true, gameManager.IsSelectingStartingCase);
             Assert.AreEqual(1, gameManager.CurrentRound);
+            Assert.AreEqual(6, gameManager.CasesAvailableForCurrentRound);
             Assert.AreEqual(6, gameManager.CasesLeftForCurrentRound);
-            Assert.AreEqual(1, gameManager.PlayerSelectedStartingCase);
+            Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             Assert.AreEqual(0, gameManager.BankerCurrentOffer);
             Assert.AreEqual(int.MaxValue, gameManager.BankerMinimumOffer);
             Assert.AreEqual(int.MinValue, gameManager.BankerMaximumOffer);
         }
 
         [TestMethod]
-        public void ShouldSetCurrentRoundToOneLessThanMinimum()
+        public void ShouldNotSetCurrentRoundToOneLessThanMinimum()
         {
             var gameManager = new GameManager();
             var message = Assert.ThrowsException<ArgumentException>(() =>
@@ -33,7 +35,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         }
 
         [TestMethod]
-        public void ShouldSetCurrentRoundToWellLessThanMinimum()
+        public void ShouldNotSetCurrentRoundToWellLessThanMinimum()
         {
             var gameManager = new GameManager();
             var message = Assert.ThrowsException<ArgumentException>(() =>
@@ -130,10 +132,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
             var gameManager = new GameManager();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                gameManager.PlayerSelectedStartingCase = -1;
+                gameManager.PlayerSelectedStartingCase = -2;
             });
 
-            Assert.AreEqual(GameManagerErrorMessages.ShouldNotSetPlaySelectedStartingCaseToLessThanZero, message.Message);
+            Assert.AreEqual(GameManagerErrorMessages.ShouldNotSetPlaySelectedStartingCaseToLessThanNegativeOne, message.Message);
         }
 
         [TestMethod]
@@ -145,14 +147,16 @@ namespace DealOrNoDeal.Tests.GameManagerTests
                 gameManager.PlayerSelectedStartingCase = -100;
             });
 
-            Assert.AreEqual(GameManagerErrorMessages.ShouldNotSetPlaySelectedStartingCaseToLessThanZero, message.Message);
+            Assert.AreEqual(GameManagerErrorMessages.ShouldNotSetPlaySelectedStartingCaseToLessThanNegativeOne, message.Message);
         }
 
         [TestMethod]
         public void ShouldSetThePlayerSelectedStartingCaseToMinimumValue()
         {
-            var gameManager = new GameManager();
-            gameManager.PlayerSelectedStartingCase = 5;
+            var gameManager = new GameManager
+            {
+                PlayerSelectedStartingCase = 5
+            };
             Assert.AreEqual(5, gameManager.PlayerSelectedStartingCase);
             gameManager.PlayerSelectedStartingCase = 1;
             Assert.AreEqual(1, gameManager.PlayerSelectedStartingCase);
@@ -162,7 +166,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldSetThePlayerSelectedStartingCaseToOneAboveMinimumValue()
         {
             var gameManager = new GameManager();
-            Assert.AreEqual(1, gameManager.PlayerSelectedStartingCase);
+            Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             gameManager.PlayerSelectedStartingCase = 2;
             Assert.AreEqual(2, gameManager.PlayerSelectedStartingCase);
         }
@@ -171,7 +175,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldSetThePlayerSelectedStartingCaseToWellAboveMinimumValue()
         {
             var gameManager = new GameManager();
-            Assert.AreEqual(1, gameManager.PlayerSelectedStartingCase);
+            Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             gameManager.PlayerSelectedStartingCase = 100;
             Assert.AreEqual(100, gameManager.PlayerSelectedStartingCase);
         }
@@ -203,8 +207,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldSetTheBankerCurrentOfferToMinimumValue()
         {
-            var gameManager = new GameManager();
-            gameManager.BankerCurrentOffer = 100;
+            var gameManager = new GameManager
+            {
+                BankerCurrentOffer = 100
+            };
             Assert.AreEqual(100, gameManager.BankerCurrentOffer);
             gameManager.BankerCurrentOffer = 0;
             Assert.AreEqual(0, gameManager.BankerCurrentOffer);
@@ -257,9 +263,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetBankerMinimumOfferToOneAboveMaximumOffer()
         {
-            var gameManager = new GameManager();
-
-            gameManager.BankerMaximumOffer = 100;
+            var gameManager = new GameManager
+            {
+                BankerMaximumOffer = 100
+            };
 
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -272,9 +279,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetBankerMinimumOfferToWellAboveMaximumOffer()
         {
-            var gameManager = new GameManager();
-
-            gameManager.BankerMaximumOffer = 100;
+            var gameManager = new GameManager
+            {
+                BankerMaximumOffer = 100
+            };
 
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -372,10 +380,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetBankerMaximumValueToOneBelowBankerMinimumValue()
         {
-            var gameManager = new GameManager();
-
-
-            gameManager.BankerMinimumOffer = 100;
+            var gameManager = new GameManager
+            {
+                BankerMinimumOffer = 100
+            };
 
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -388,9 +396,10 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetBankerMaximumValueToWellBelowBankerMinimumValue()
         {
-            var gameManager = new GameManager();
-
-            gameManager.BankerMinimumOffer = 100;
+            var gameManager = new GameManager
+            {
+                BankerMinimumOffer = 100
+            };
 
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -458,13 +467,6 @@ namespace DealOrNoDeal.Tests.GameManagerTests
             gameManager.BankerMaximumOffer = 200;
             Assert.AreEqual(100, gameManager.BankerMinimumOffer);
             Assert.AreEqual(200, gameManager.BankerMaximumOffer);
-        }
-
-        [TestMethod]
-        public void ShouldCalculateTotalBriefCaseDollarAmounts()
-        {
-            var gameManager = new GameManager();
-            Assert.AreEqual(3418416, gameManager.TotalBriefCaseDollarAmountInPlay);
         }
     }
 }

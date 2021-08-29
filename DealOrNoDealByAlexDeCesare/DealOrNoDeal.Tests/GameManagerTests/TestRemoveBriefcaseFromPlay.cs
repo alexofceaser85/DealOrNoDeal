@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DealOrNoDeal.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,8 +11,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotRemoveOneBriefcaseIfNotPresentInListOfOneBriefcase()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0 };
-            IList<int> dollarValues = new List<int>() { 10 };
+            IList<int> mockRandomIndexes = new List<int> { 0 };
+            IList<int> dollarValues = new List<int> { 10 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(-1, gameManager.RemoveBriefcaseFromPlay(5));
@@ -28,8 +24,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldRemoveOneBriefcaseIfOnlyBriefcaseInList()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0 };
-            IList<int> dollarValues = new List<int>() { 10 };
+            IList<int> mockRandomIndexes = new List<int> { 0 };
+            IList<int> dollarValues = new List<int> { 10 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(10, gameManager.RemoveBriefcaseFromPlay(0));
@@ -41,8 +37,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldRemoveFirstOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(5, gameManager.RemoveBriefcaseFromPlay(0));
@@ -56,8 +52,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldRemoveMiddleOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(1, gameManager.RemoveBriefcaseFromPlay(1));
@@ -71,8 +67,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldRemoveLastOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(3, gameManager.RemoveBriefcaseFromPlay(2));
@@ -86,8 +82,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotRemoveBriefcaseIfItIsNotPresentInListOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(-1, gameManager.RemoveBriefcaseFromPlay(10));

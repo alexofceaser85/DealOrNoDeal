@@ -16,7 +16,7 @@ namespace DealOrNoDeal.Model
         /// </summary>
         public int BriefcaseId
         {
-            get => briefcaseId;
+            get => this.briefcaseId;
             set
             {
                 if (value < 0)
@@ -24,7 +24,7 @@ namespace DealOrNoDeal.Model
                     throw new ArgumentException(BriefcaseErrorMessages
                         .CannotSetBriefcaseIdToLessThanZero);
                 }
-                briefcaseId = value;
+                this.briefcaseId = value;
             }
         }
 
@@ -33,7 +33,7 @@ namespace DealOrNoDeal.Model
         /// </summary>
         public int DollarAmount
         {
-            get => dollarAmount;
+            get => this.dollarAmount;
             set
             {
                 if (value < 0)
@@ -42,7 +42,7 @@ namespace DealOrNoDeal.Model
                         BriefcaseErrorMessages.CannotSetDollarAmountToLessThanZero);
                 }
 
-                dollarAmount = value;
+                this.dollarAmount = value;
             }
         }
 
@@ -65,8 +65,8 @@ namespace DealOrNoDeal.Model
 
             if (dollarAmount < 0) throw new ArgumentException(BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero);
 
-            BriefcaseId = briefcaseId;
-            DollarAmount = dollarAmount;
+            this.BriefcaseId = briefcaseId;
+            this.DollarAmount = dollarAmount;
         }
     }
 }

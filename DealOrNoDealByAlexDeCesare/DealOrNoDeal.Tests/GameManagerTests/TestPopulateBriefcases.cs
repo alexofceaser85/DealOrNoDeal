@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using DealOrNoDeal.ErrorMessages;
 using DealOrNoDeal.Model;
@@ -14,7 +13,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotAllowNullDollarValuesToPopulate()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
                 gameManager.PopulateBriefcases(mockRandomIndexes, null);
@@ -27,7 +26,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotAllowNullIndexesOfDollarValuesToPopulate()
         {
             var gameManager = new GameManager();
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
                 gameManager.PopulateBriefcases(null, dollarValues);
@@ -40,8 +39,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldPopulateBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 2, 0, 1 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             Assert.AreEqual(5, gameManager.GetBriefcaseValue(0));

@@ -12,8 +12,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldGetBriefcaseIfBriefcaseIsInGameManager()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0 };
-            IList<int> dollarValues = new List<int>() { 1 };
+            IList<int> mockRandomIndexes = new List<int> { 0 };
+            IList<int> dollarValues = new List<int> { 1 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(0);
@@ -25,8 +25,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotGetBriefcaseIfBriefcaseIsNotInGameManager()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0 };
-            IList<int> dollarValues = new List<int>() { 1 };
+            IList<int> mockRandomIndexes = new List<int> { 0 };
+            IList<int> dollarValues = new List<int> { 1 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(1);
@@ -37,8 +37,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldGetFirstOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0, 1, 2 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(0);
@@ -49,8 +49,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldGetMiddleOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0, 1, 2 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(1);
@@ -61,8 +61,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldGetLastOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0, 1, 2 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(2);
@@ -73,8 +73,8 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         public void ShouldNotGetBriefcaseIfNotPresentInListOfManyBriefcases()
         {
             var gameManager = new GameManager();
-            IList<int> mockRandomIndexes = new List<int>() { 0, 1, 2 };
-            IList<int> dollarValues = new List<int>() { 1, 3, 5 };
+            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
+            IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
 
             var briefcase = gameManager.GetBriefcaseValue(10);

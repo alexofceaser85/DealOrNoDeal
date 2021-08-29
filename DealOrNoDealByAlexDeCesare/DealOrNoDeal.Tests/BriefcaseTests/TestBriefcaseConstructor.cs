@@ -11,53 +11,53 @@ namespace DealOrNoDeal.Tests.BriefcaseTests
         [TestMethod]
         public void ShouldNotAllowBriefcaseIdOneLessThanZero()
         {
-            Model.Briefcase briefcase = null;
+            Briefcase briefcase = null;
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                briefcase = new Model.Briefcase(-1, 100);
+                briefcase = new Briefcase(-1, 100);
             });
 
             Assert.IsNull(briefcase);
-            Assert.AreEqual(ErrorMessages.BriefcaseErrorMessages.BriefCaseIdCannotBeLessThanZero, message.Message);
+            Assert.AreEqual(BriefcaseErrorMessages.BriefCaseIdCannotBeLessThanZero, message.Message);
         }
 
         [TestMethod]
         public void ShouldNotAllowBriefcaseIdWellLessThanZero()
         {
-            Model.Briefcase briefcase = null;
+            Briefcase briefcase = null;
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                briefcase = new Model.Briefcase(-100, 100);
+                briefcase = new Briefcase(-100, 100);
             });
 
             Assert.IsNull(briefcase);
-            Assert.AreEqual(ErrorMessages.BriefcaseErrorMessages.BriefCaseIdCannotBeLessThanZero, message.Message);
+            Assert.AreEqual(BriefcaseErrorMessages.BriefCaseIdCannotBeLessThanZero, message.Message);
         }
 
         [TestMethod]
         public void ShouldNotAllowDollarAmountOneLessThanZero()
         {
-            Model.Briefcase briefcase = null;
+            Briefcase briefcase = null;
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                briefcase = new Model.Briefcase(100, -1);
+                briefcase = new Briefcase(100, -1);
             });
 
             Assert.IsNull(briefcase);
-            Assert.AreEqual(ErrorMessages.BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero, message.Message);
+            Assert.AreEqual(BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero, message.Message);
         }
 
         [TestMethod]
         public void ShouldNotAllowDollarAmountWellLessThanZero()
         {
-            Model.Briefcase briefcase = null;
+            Briefcase briefcase = null;
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                briefcase = new Model.Briefcase(100, -100);
+                briefcase = new Briefcase(100, -100);
             });
 
             Assert.IsNull(briefcase);
-            Assert.AreEqual(ErrorMessages.BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero, message.Message);
+            Assert.AreEqual(BriefcaseErrorMessages.DollarAmountCannotBeLessThanZero, message.Message);
         }
 
         [TestMethod]
