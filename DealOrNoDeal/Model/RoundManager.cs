@@ -16,8 +16,33 @@ namespace DealOrNoDeal.Model
     {
         private const int InitialCurrentRound = 1;
 
+        private int indexOfAvailableCasesForNextRound = 1;
+
         private int currentRound;
         private int casesLeftForCurrentRound;
+
+        /// <summary>
+        /// The cases for the next round of the game
+        ///
+        /// Precondition: None
+        /// Postcondition: None
+        /// </summary>
+        public int CasesAvailableForNextRound { get; private set; }
+
+        /// <summary>
+        ///     The number of cases that are available for selection by the player for each new round
+        ///     Precondition: None
+        ///     Postcondition: None
+        /// </summary>
+        public int CasesAvailableForCurrentRound { get; private set; }
+
+        /// <summary>
+        /// The cases available for each round
+        ///
+        /// Precondition: None
+        /// Postcondition: None
+        /// </summary>
+        public IList<int> CasesAvailableForEachRound { get; }
 
         /// <summary>
         ///     The current round that the game is on
@@ -43,13 +68,6 @@ namespace DealOrNoDeal.Model
         }
 
         /// <summary>
-        ///     The number of cases that are available for selection by the player for each new round
-        ///     Precondition: None
-        ///     Postcondition: None
-        /// </summary>
-        public int CasesAvailableForCurrentRound { get; private set; }
-
-        /// <summary>
         ///     The cases left for the game's current round
         ///     Precondition:
         ///     value >= 0
@@ -72,11 +90,47 @@ namespace DealOrNoDeal.Model
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoundManager" /> class.
+        ///
+        /// Precondition: None
+        /// Postcondition:
+        ///     this.CasesAvailableForEachRound == casesAvailableForEachRound
+        ///     this.CasesAvailableForNextRound == this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound]
+        ///     AND this.CurrentRound == InitialCurrentRound
+        ///     AND this.CasesAvailableForCurrentRound == this.CasesAvailableForEachRound[0]
+        ///     AND this.CasesLeftForCurrentRound == this.CasesAvailableForEachRound[0]
+        ///
+        ///     OR IF ArgumentOutOfRangeException THEN
+        ///     this.CasesAvailableForNextRound = 0;
+        ///     this.CurrentRound = InitialCurrentRound;
+        ///     this.CasesAvailableForCurrentRound = 0;
+        ///     this.CasesLeftForCurrentRound = 0;
+        ///     
+        /// </summary>
+        /// <param name="casesAvailableForEachRound">The cases available for each round of the game</param>
         public RoundManager(IList<int> casesAvailableForEachRound)
         {
-            this.CurrentRound = InitialCurrentRound;
-            this.CasesAvailableForCurrentRound = casesAvailableForEachRound[0];
-            this.CasesLeftForCurrentRound = casesAvailableForEachRound[0];
+            if (casesAvailableForEachRound == null)
+            {
+                throw new ArgumentException(RoundManagerErrorMessages.ShouldNotAllowNullCasesAvailableForEachRound);
+            }
+
+            try
+            {
+                this.CasesAvailableForEachRound = casesAvailableForEachRound;
+                this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
+                this.CurrentRound = InitialCurrentRound;
+                this.CasesAvailableForCurrentRound = this.CasesAvailableForEachRound[0];
+                this.CasesLeftForCurrentRound = this.CasesAvailableForEachRound[0];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                this.CasesAvailableForNextRound = 0;
+                this.CurrentRound = InitialCurrentRound;
+                this.CasesAvailableForCurrentRound = 0;
+                this.CasesLeftForCurrentRound = 0;
+            }
         }
 
         /// <summary>
@@ -85,10 +139,16 @@ namespace DealOrNoDeal.Model
         ///     Precondition: None
         ///     Postcondition:
         ///     Round == Round@prev + 1
+        ///     AND this.indexOfAvailableCasesForNextRound += 1 IF LESS THAN this.CasesAvailableForEachRound.Count - 1
         ///     AND CasesRemainingInRound == (number of cases to open in the next round)
         /// </summary>
         public void MoveToNextRound()
         {
+            if (this.indexOfAvailableCasesForNextRound < this.CasesAvailableForEachRound.Count - 1)
+            {
+                this.indexOfAvailableCasesForNextRound += 1;
+                this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
+            }
             this.CurrentRound++;
             if (this.CasesAvailableForCurrentRound > 1)
             {

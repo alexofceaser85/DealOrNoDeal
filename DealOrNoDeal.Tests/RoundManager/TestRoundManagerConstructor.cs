@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DealOrNoDeal.Data;
 using DealOrNoDeal.ErrorMessages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,9 +10,32 @@ namespace DealOrNoDeal.Tests.RoundManager
     public class TestRoundManagerConstructor
     {
         [TestMethod]
+        public void ShouldNotAllowNullCasesForEachRound()
+        {
+            string message = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                new Model.RoundManager(null);
+            }).Message;
+
+            Assert.AreEqual(RoundManagerErrorMessages.ShouldNotAllowNullCasesAvailableForEachRound, message);
+        }
+
+        [TestMethod]
+        public void ShouldHandleEmptyList()
+        {
+            var roundManager = new Model.RoundManager(new List<int>());
+
+            Assert.AreEqual(0, roundManager.CasesAvailableForNextRound);
+            Assert.AreEqual(1, roundManager.CurrentRound);
+            Assert.AreEqual(0, roundManager.CasesAvailableForCurrentRound);
+            Assert.AreEqual(0, roundManager.CasesLeftForCurrentRound);
+        }
+
+        [TestMethod]
         public void ShouldInitializeDefaultValues()
         {
             var roundManager = new Model.RoundManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            Assert.AreEqual(5, roundManager.CasesAvailableForNextRound);
             Assert.AreEqual(1, roundManager.CurrentRound);
             Assert.AreEqual(6, roundManager.CasesAvailableForCurrentRound);
             Assert.AreEqual(6, roundManager.CasesLeftForCurrentRound);

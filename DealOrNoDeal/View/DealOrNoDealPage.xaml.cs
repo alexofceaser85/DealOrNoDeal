@@ -180,8 +180,8 @@ namespace DealOrNoDeal.View
                 this.removeBriefcaseFromPlay(briefcaseId, briefcaseButton);
             }
 
-            this.updateSummaryOutputTextForSelectionOfBriefcase();
             this.updateCurrentRoundInformation();
+            this.updateSummaryOutputTextForSelectionOfBriefcase();
             this.updateButtonsForEachRound();
             this.theGameManager.IsSelectingStartingCase = false;
         }
@@ -196,7 +196,6 @@ namespace DealOrNoDeal.View
         {
             var removedBriefcaseValue = this.theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
             this.briefcaseButtons.Remove(senderButton);
-            this.theGameManager.RoundManager.CasesLeftForCurrentRound--;
             this.findAndGrayOutGameDollarLabel(removedBriefcaseValue);
         }
 
@@ -234,7 +233,7 @@ namespace DealOrNoDeal.View
 
         private void updateCurrentRoundInformation()
         {
-            if (this.theGameManager.RoundManager.CasesLeftForCurrentRound == 1)
+            if (this.theGameManager.RoundManager.CasesLeftForCurrentRound == 0)
             {
                 this.updateFormattedBankerOffers();
             }

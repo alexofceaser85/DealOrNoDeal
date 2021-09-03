@@ -209,6 +209,7 @@ namespace DealOrNoDeal.Model
             }
 
             this.theBriefcases.Remove(this.getBriefcaseById(id));
+            this.RoundManager.CasesLeftForCurrentRound--;
             return briefcaseToRemove.DollarAmount;
         }
 
@@ -220,7 +221,7 @@ namespace DealOrNoDeal.Model
         /// <returns>The current banker offer</returns>
         public int GetOffer()
         {
-            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.RoundManager.CasesLeftForCurrentRound);
+            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.RoundManager.CasesAvailableForNextRound);
             return bankerOffer;
         }
 

@@ -25,5 +25,10 @@ namespace DealOrNoDeal.ErrorMessages
         public const string ShouldNotSetCasesLeftForCurrentRoundToLessThanZero =
             "Cannot set the cases left for the current round to a value less than zero";
 
+        /// <summary>
+        /// The error message that tells the user that they should allow a null cases available for each round
+        /// </summary>
+        public const string ShouldNotAllowNullCasesAvailableForEachRound =
+            "Cannot allow a round manager with null cases available for each round";
     }
 }
