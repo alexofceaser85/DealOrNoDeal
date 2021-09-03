@@ -19,7 +19,7 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\AppX</LayoutDir>
-    <RegisteredManifestChecksum>19D405CA3A2E775B4F66750A3493CA3ED0F2AEBD31FCF86068514EEB1B05B4DA</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>39BF55171E9B5ECA1D71A50909FD6EAD9EBC7F2FB23848C6EE07A42D0954D4CD</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>53d5f6c6-ecf9-4452-bede-362b1bfa6900_1.0.0.0_x64__vpktpzvxd0r0j</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>53d5f6c6-ecf9-4452-bede-362b1bfa6900_vpktpzvxd0r0j!App</RegisteredUserModeAppID>
     <RegisteredPackageID>53d5f6c6-ecf9-4452-bede-362b1bfa6900</RegisteredPackageID>
@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2021-08-29T13:27:55.027</Modified>
+      <Modified>2021-09-03T14:03:58.761</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.exe">
       <PackagePath>entrypoint\DealOrNoDeal.exe</PackagePath>
-      <Modified>2021-08-29T13:27:51.739</Modified>
+      <Modified>2021-09-03T14:03:52.398</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\UWPNuGetPackages\runtime.win10-x64.microsoft.netcore.universalwindowsplatform\6.2.12\runtimes\win10-x64\lib\uap10.0.15138\System.Runtime.dll">
       <PackagePath>System.Runtime.dll</PackagePath>
@@ -94,11 +94,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2021-08-29T13:27:51.472</Modified>
+      <Modified>2021-09-03T14:03:52.165</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\View\DealOrNoDealPage.xbf">
       <PackagePath>View\DealOrNoDealPage.xbf</PackagePath>
-      <Modified>2021-08-29T13:27:51.471</Modified>
+      <Modified>2021-09-03T14:03:52.164</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.18362.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -106,11 +106,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2021-08-29T13:27:53.795</Modified>
+      <Modified>2021-09-03T14:03:54.391</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\Core\DealOrNoDeal.exe">
       <PackagePath>DealOrNoDeal.exe</PackagePath>
-      <Modified>2021-08-29T13:27:55.008</Modified>
+      <Modified>2021-09-03T14:03:58.751</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

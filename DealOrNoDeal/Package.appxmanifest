@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="DealOrNoDeal.App">
       <uap:VisualElements
-        DisplayName="Deal Or No Deal by"
+        DisplayName="Deal Or No Deal by Alex DeCesare"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="DealOrNoDeal"
