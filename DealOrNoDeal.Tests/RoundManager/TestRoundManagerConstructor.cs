@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DealOrNoDeal.Data;
 using DealOrNoDeal.ErrorMessages;
-using DealOrNoDeal.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DealOrNoDeal.Tests.RoundManager
 {
     [TestClass]
-    class TestRoundManagerConstructor
+    public class TestRoundManagerConstructor
     {
         [TestMethod]
         public void ShouldInitializeDefaultValues()

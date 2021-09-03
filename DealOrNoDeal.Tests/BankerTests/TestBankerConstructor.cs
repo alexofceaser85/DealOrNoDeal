@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DealOrNoDeal.Tests.BankerTests
 {
     [TestClass]
-    class TestBankerConstructor
+    public class TestBankerConstructor
     {
         [TestMethod]
         public void ShouldNotSetTheCurrentOfferToOneBelowMinimumValue()
