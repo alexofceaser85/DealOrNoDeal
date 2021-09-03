@@ -19,11 +19,11 @@ namespace DealOrNoDeal.Model
         /// <returns>The amount of money which will be offered by the banker</returns>
         public static int CalculateBankerOffer(IList<Briefcase> briefcasesStillInPlay, int numberOfCasesToOpenInNextRound)
         {
-            var unRoundedBankerOffer = (double) calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
-            return (int) Math.Round(unRoundedBankerOffer);
+            var unRoundedBankerOffer = calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
+            return roundBankerOfferToNearestOneHundred(unRoundedBankerOffer);
         }
 
-        private static int calculateTotalBriefcaseDollarAmounts(IEnumerable<Briefcase> briefcasesStillInPlay)
+        private static double calculateTotalBriefcaseDollarAmounts(IEnumerable<Briefcase> briefcasesStillInPlay)
         {
             var totalBriefcaseDollarAmounts = 0;
 
@@ -33,6 +33,11 @@ namespace DealOrNoDeal.Model
             }
 
             return totalBriefcaseDollarAmounts;
+        }
+
+        private static int roundBankerOfferToNearestOneHundred(double unRoundedBankerOffer)
+        {
+            return (int)Math.Round(unRoundedBankerOffer / 100) * 100;
         }
     }
 }
