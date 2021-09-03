@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
 {
@@ -19,6 +20,18 @@ namespace DealOrNoDeal.Model
         /// <returns>The amount of money which will be offered by the banker</returns>
         public static int CalculateBankerOffer(IList<Briefcase> briefcasesStillInPlay, int numberOfCasesToOpenInNextRound)
         {
+            if (briefcasesStillInPlay == null)
+            {
+                throw new ArgumentException(BankerErrorMessages
+                    .CannotCalculateBankerOfferIfBriefcasesStillInPlayAreNull);
+            }
+
+            if (numberOfCasesToOpenInNextRound <= 0)
+            {
+                throw new ArgumentException(BankerErrorMessages
+                    .CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
+            }
+
             var unRoundedBankerOffer = calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
             return roundBankerOfferToNearestOneHundred(unRoundedBankerOffer);
         }
