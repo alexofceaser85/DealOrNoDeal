@@ -1,2 +1,0 @@
-C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\DealOrNoDeal.Tests.csproj;x64
-C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\DealOrNoDeal.csproj;x64
