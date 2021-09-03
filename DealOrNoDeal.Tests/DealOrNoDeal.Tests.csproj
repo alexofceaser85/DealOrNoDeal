@@ -119,7 +119,8 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankerTests\CalculateBankerOfferTests.cs" />
+    <Compile Include="BankerTests\TestCalculateBankerOffer.cs" />
+    <Compile Include="BankerTests\TestGameManagerConstructor.cs" />
     <Compile Include="BriefcaseTests\TestBriefcaseConstructor.cs" />
     <Compile Include="GameManagerTests\TestGameManagerConstructor.cs" />
     <Compile Include="GameManagerTests\TestGetBriefcaseValue.cs" />

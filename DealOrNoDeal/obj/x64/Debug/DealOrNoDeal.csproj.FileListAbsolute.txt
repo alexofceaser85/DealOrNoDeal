@@ -55,6 +55,7 @@ C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\Cor
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.build.appxrecipe
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\System.Runtime.dll
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\Microsoft.UI.Xaml.Markup.winmd
+C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\obj\x64\Debug\DealOrNoDeal.csproj.AssemblyReference.cache
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\obj\x64\Debug\App.g.i.cs
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\obj\x64\Debug\App.g.cs
 C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\obj\x64\Debug\View\DealOrNoDealPage.g.i.cs

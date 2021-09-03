@@ -251,9 +251,9 @@ namespace DealOrNoDeal.View
         private void updateFormattedBankerOffers()
         {
             this.theGameManager.GetOffer();
-            this.formattedBankerCurrentOffer = this.theGameManager.BankerCurrentOffer.ToString("C");
-            this.formattedBankerMinimumOffer = this.theGameManager.BankerMinimumOffer.ToString("C");
-            this.formattedBankerMaximumOffer = this.theGameManager.BankerMaximumOffer.ToString("C");
+            this.formattedBankerCurrentOffer = this.theGameManager.Banker.CurrentOffer.ToString("C");
+            this.formattedBankerMinimumOffer = this.theGameManager.Banker.MinimumOffer.ToString("C");
+            this.formattedBankerMaximumOffer = this.theGameManager.Banker.MaximumOffer.ToString("C");
         }
 
         private void displayRoundInformationNeededForFinalRound()

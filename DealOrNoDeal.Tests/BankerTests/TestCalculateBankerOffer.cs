@@ -8,14 +8,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DealOrNoDeal.Tests.BankerTests
 {
     [TestClass]
-    public class CalculateBankerOfferTests
+    public class TestCalculateBankerOffer
     {
         [TestMethod]
         public void ShouldNotCalculateOfferForNullList()
         {
+            Banker banker = new Banker();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                _ = Banker.CalculateBankerOffer(null, 10);
+                banker.CalculateOffer(null, 10);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfBriefcasesStillInPlayAreNull);
@@ -24,17 +25,19 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferForEmptyList()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
-            Assert.AreEqual(0, Banker.CalculateBankerOffer(briefcases, 10));
+            Assert.AreEqual(0, banker.CalculateOffer(briefcases, 10));
         }
 
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsZero()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                _ = Banker.CalculateBankerOffer(briefcases, 0);
+                banker.CalculateOffer(briefcases, 0);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -43,10 +46,11 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsOneLessThanZero()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                _ = Banker.CalculateBankerOffer(briefcases, -1);
+                banker.CalculateOffer(briefcases, -1);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -55,10 +59,11 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsWellLessThanZero()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                _ = Banker.CalculateBankerOffer(briefcases, -100);
+                banker.CalculateOffer(briefcases, -100);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -67,23 +72,26 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldCalculateOfferForListOfOneItemAndOneNumberOfCaseToOpenInNextRound()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             briefcases.Add(new Briefcase(0, 100));
 
-            Assert.AreEqual(100, Banker.CalculateBankerOffer(briefcases, 1));
+            Assert.AreEqual(100, banker.CalculateOffer(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForStartOfFirstRound()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
 
-            Assert.AreEqual(131500, Banker.CalculateBankerOffer(briefcases, 1));
+            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForEndOfFirstRound()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
             briefcases.RemoveAt(2);
             briefcases.RemoveAt(5);
@@ -92,15 +100,16 @@ namespace DealOrNoDeal.Tests.BankerTests
             briefcases.RemoveAt(19);
             briefcases.RemoveAt(20);
 
-            Assert.AreEqual(18900, Banker.CalculateBankerOffer(briefcases, 5));
+            Assert.AreEqual(18900, banker.CalculateOffer(briefcases, 5));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForEndOfFifthRound()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = this.returnBriefcasesBasedOnDataForFifthRound();
 
-            Assert.AreEqual(12800, Banker.CalculateBankerOffer(briefcases, 1));
+            Assert.AreEqual(12800, banker.CalculateOffer(briefcases, 1));
         }
 
         private IList<Briefcase> returnBriefcasesBasedOnDataForFifthRound()
@@ -152,20 +161,22 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForFinalRound()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             briefcases.Add(new Briefcase(0, 1000));
             briefcases.Add(new Briefcase(1, 10000));
 
-            Assert.AreEqual(5500, Banker.CalculateBankerOffer(briefcases, 1));
+            Assert.AreEqual(5500, banker.CalculateOffer(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateIfOnlyBriefcaseHasAValueOfZero()
         {
+            Banker banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
             briefcases.Add(new Briefcase(0, 0));
 
-            Assert.AreEqual(0, Banker.CalculateBankerOffer(briefcases, 1));
+            Assert.AreEqual(0, banker.CalculateOffer(briefcases, 1));
         }
     }
 }

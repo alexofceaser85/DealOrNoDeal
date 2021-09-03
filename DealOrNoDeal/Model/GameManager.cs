@@ -17,9 +17,6 @@ namespace DealOrNoDeal.Model
         private const int InitialCurrentRound = 1;
         private const int InitialCasesLeftForCurrentRound = 6;
         private const int InitialPlayerSelectedStartingCase = -1;
-        private const int InitialBankerCurrentOffer = 0;
-        private const int InitialBankerMinimumOffer = int.MaxValue;
-        private const int InitialBankerMaximumOffer = int.MinValue;
 
         private readonly IList<int> briefCaseDollarAmounts = new List<int> {
             0, 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000,
@@ -27,13 +24,9 @@ namespace DealOrNoDeal.Model
         };
 
         private IList<Briefcase> theBriefcases;
-
         private int currentRound;
         private int casesLeftForCurrentRound;
         private int playerSelectedStartingCase;
-        private int bankerCurrentOffer;
-        private int bankerMinimumOffer;
-        private int bankerMaximumOffer;
 
         #endregion
 
@@ -45,6 +38,14 @@ namespace DealOrNoDeal.Model
         ///     Postcondition: None
         /// </summary>
         public bool IsSelectingStartingCase { get; set; }
+
+        /// <summary>
+        ///     The banker for the game
+        ///
+        ///     Precondition: None
+        ///     Postcondition: None
+        /// </summary>
+        public Banker Banker { get; }
 
         /// <summary>
         ///     The current round that the game is on
@@ -122,89 +123,6 @@ namespace DealOrNoDeal.Model
             }
         }
 
-        /// <summary>
-        ///     The current banker offer.
-        ///     Precondition:
-        ///     value >= 0
-        ///     Postcondition:
-        ///     this.bankerCurrentOffer == value
-        /// </summary>
-        /// <value>The banker's current offer.</value>
-        public int BankerCurrentOffer
-        {
-            get => this.bankerCurrentOffer;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetBankerCurrentOfferToLessThanZero);
-                }
-
-                this.bankerCurrentOffer = value;
-            }
-        }
-
-        /// <summary>
-        ///     The lowest offer the banker offered throughout the game
-        ///     Precondition:
-        ///     value  >= 0
-        ///     AND value >= this.BankerMinimumOffer OR this.BankerMinimumOffer == InitialBankerMinimumOffer
-        ///     Postcondition:
-        ///     this.bankerMinimumOffer == value
-        /// </summary>
-        /// <value>The minimum banker offer.</value>
-        public int BankerMinimumOffer
-        {
-            get => this.bankerMinimumOffer;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetBankerMinimumOfferToLessThanZero);
-                }
-
-                if (value > this.BankerMaximumOffer && this.BankerMaximumOffer != InitialBankerMaximumOffer)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetBankerMinimumOfferToMoreThanMaximumOffer);
-                }
-
-                this.bankerMinimumOffer = value;
-            }
-        }
-
-        /// <summary>
-        ///     The highest offer the banker offered throughout the game
-        ///     Precondition:
-        ///     value >= 0
-        ///     AND value >= this.BankerMaximumOffer OR this.BankerMaximumOffer == InitialBankerMaximumOffer
-        ///     Postcondition:
-        ///     this.bankerMaximumOffer == value
-        /// </summary>
-        /// <value>The maximum banker offer.</value>
-        public int BankerMaximumOffer
-        {
-            get => this.bankerMaximumOffer;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetBankerMaximumOfferToLessThanZero);
-                }
-
-                if (value < this.BankerMinimumOffer && this.BankerMinimumOffer != InitialBankerMinimumOffer)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetBankerMaximumOfferToLessThanMinimumOffer);
-                }
-
-                this.bankerMaximumOffer = value;
-            }
-        }
-
         #endregion
 
         #region Constructors
@@ -217,9 +135,7 @@ namespace DealOrNoDeal.Model
         ///     AND this.CurrentRound == InitialCurrentRound;
         ///     AND this.CasesLeftForCurrentRound == InitialCasesLeftForCurrentRound;
         ///     AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
-        ///     AND this.BankerCurrentOffer == InitialBankerCurrentOffer;
-        ///     AND this.BankerMinimumOffer == InitialBankerMinimumOffer;
-        ///     AND this.BankerMaximumOffer == InitialBankerMaximumOffer;
+        ///     AND this.Banker == new Banker()
         /// </summary>
         public GameManager()
         {
@@ -229,13 +145,14 @@ namespace DealOrNoDeal.Model
 
             this.PopulateBriefcases(randomIndexesToAccessBriefcaseDollarAmounts, this.briefCaseDollarAmounts);
             this.IsSelectingStartingCase = true;
+
             this.CurrentRound = InitialCurrentRound;
             this.CasesAvailableForCurrentRound = InitialCasesLeftForCurrentRound;
             this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
+
             this.PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
-            this.BankerCurrentOffer = InitialBankerCurrentOffer;
-            this.bankerMinimumOffer = InitialBankerMinimumOffer;
-            this.bankerMaximumOffer = InitialBankerMaximumOffer;
+
+            this.Banker = new Banker();
         }
 
         #endregion
@@ -357,23 +274,8 @@ namespace DealOrNoDeal.Model
         /// <returns>The current banker offer</returns>
         public int GetOffer()
         {
-            var bankerOffer = Banker.CalculateBankerOffer(this.theBriefcases, this.CasesLeftForCurrentRound);
-            this.updateBankerOffers(bankerOffer);
+            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.CasesLeftForCurrentRound);
             return bankerOffer;
-        }
-
-        private void updateBankerOffers(int bankerOffer)
-        {
-            this.BankerCurrentOffer = bankerOffer;
-            if (this.bankerMinimumOffer > bankerOffer)
-            {
-                this.bankerMinimumOffer = bankerOffer;
-            }
-
-            if (this.bankerMaximumOffer < bankerOffer)
-            {
-                this.bankerMaximumOffer = bankerOffer;
-            }
         }
 
         /// <summary>
