@@ -6,6 +6,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using DealOrNoDeal.Data;
 using DealOrNoDeal.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -64,7 +65,7 @@ namespace DealOrNoDeal.View
         {
             this.InitializeComponent();
             this.initializeUiDataAndControls();
-            this.theGameManager = new GameManager();
+            this.theGameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
 
             this.toggleDealButtonAndNoDealButtonVisibility();
         }
@@ -195,7 +196,7 @@ namespace DealOrNoDeal.View
         {
             var removedBriefcaseValue = this.theGameManager.RemoveBriefcaseFromPlay(briefcaseId);
             this.briefcaseButtons.Remove(senderButton);
-            this.theGameManager.CasesLeftForCurrentRound--;
+            this.theGameManager.RoundManager.CasesLeftForCurrentRound--;
             this.findAndGrayOutGameDollarLabel(removedBriefcaseValue);
         }
 
@@ -210,7 +211,7 @@ namespace DealOrNoDeal.View
             {
                 this.displaySummaryInformationNeededForSelectionOfStartingCase();
             }
-            else if (this.theGameManager.CasesLeftForCurrentRound == CasesLeftToEndRound)
+            else if (this.theGameManager.RoundManager.CasesLeftForCurrentRound == CasesLeftToEndRound)
             {
                 this.displaySummaryInformationNeededForEndOfRound();
             }
@@ -233,12 +234,12 @@ namespace DealOrNoDeal.View
 
         private void updateCurrentRoundInformation()
         {
-            if (this.theGameManager.CasesLeftForCurrentRound == 1)
+            if (this.theGameManager.RoundManager.CasesLeftForCurrentRound == 1)
             {
                 this.updateFormattedBankerOffers();
             }
 
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.displayRoundInformationNeededForFinalRound();
             }
@@ -265,9 +266,9 @@ namespace DealOrNoDeal.View
         private void displayRoundInformationNeededForGameplayWithinRound()
         {
             var currentRoundAndCasesAvailableForRoundMessage =
-                $"Round {this.theGameManager.CurrentRound.ToString()}: {this.theGameManager.CasesAvailableForCurrentRound} cases to open";
+                $"Round {this.theGameManager.RoundManager.CurrentRound.ToString()}: {this.theGameManager.RoundManager.CasesAvailableForCurrentRound} cases to open";
             var numberOfCasesLeftToOpenForRoundMessage =
-                $"{this.theGameManager.CasesLeftForCurrentRound.ToString()} more cases to open";
+                $"{this.theGameManager.RoundManager.CasesLeftForCurrentRound.ToString()} more cases to open";
 
             this.roundLabel.Text = currentRoundAndCasesAvailableForRoundMessage;
             this.casesToOpenLabel.Text = numberOfCasesLeftToOpenForRoundMessage;
@@ -275,11 +276,11 @@ namespace DealOrNoDeal.View
 
         private void updateButtonsForEachRound()
         {
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.updateButtonsForFinalRound();
             }
-            else if (this.theGameManager.CasesLeftForCurrentRound == CasesLeftToEndRound)
+            else if (this.theGameManager.RoundManager.CasesLeftForCurrentRound == CasesLeftToEndRound)
             {
                 this.updateButtonsForEndOfRound();
             }
@@ -393,7 +394,7 @@ namespace DealOrNoDeal.View
 
         private void dealButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.toggleDealButtonAndNoDealButtonVisibility();
                 this.updateSummaryTextForFinalBriefcaseSelection(this.dealButton);
@@ -421,7 +422,7 @@ namespace DealOrNoDeal.View
 
         private void updateSummaryOutputForDealButtonClick(int playerStartingCase)
         {
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.displaySummaryInformationForFinalRound();
             }
@@ -448,7 +449,7 @@ namespace DealOrNoDeal.View
 
         private void noDealButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.toggleDealButtonAndNoDealButtonVisibility();
                 this.updateSummaryTextForFinalBriefcaseSelection(this.noDealButton);
@@ -465,7 +466,7 @@ namespace DealOrNoDeal.View
 
         private void updateSummaryTextForNoDealButtonClick()
         {
-            if (this.theGameManager.CurrentRound == FinalRound)
+            if (this.theGameManager.RoundManager.CurrentRound == FinalRound)
             {
                 this.displaySummaryInformationForFinalRound();
             }

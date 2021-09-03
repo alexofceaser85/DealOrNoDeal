@@ -127,12 +127,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\CasesToOpenForEachRound.cs" />
     <Compile Include="ErrorMessages\BankerErrorMessages.cs" />
     <Compile Include="ErrorMessages\BriefcaseErrorMessages.cs" />
     <Compile Include="ErrorMessages\GameManagerErrorMessages.cs" />
+    <Compile Include="ErrorMessages\RoundManagerErrorMessages.cs" />
     <Compile Include="Model\Banker.cs" />
     <Compile Include="Model\Briefcase.cs" />
     <Compile Include="Model\GameManager.cs" />
+    <Compile Include="Model\RoundManager.cs" />
     <Compile Include="View\DealOrNoDealPage.xaml.cs">
       <DependentUpon>DealOrNoDealPage.xaml</DependentUpon>
     </Compile>

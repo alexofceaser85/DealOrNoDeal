@@ -30,25 +30,25 @@
     <AppXManifest Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2021-09-03T19:39:51.671</Modified>
+      <Modified>2021-09-03T20:42:10.719</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\DealOrNoDeal.Tests.exe">
       <PackagePath>entrypoint\DealOrNoDeal.Tests.exe</PackagePath>
-      <Modified>2021-09-03T19:39:50.351</Modified>
+      <Modified>2021-09-03T20:42:09.545</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.exe">
       <PackagePath>DealOrNoDeal.exe</PackagePath>
-      <Modified>2021-09-03T19:39:41.198</Modified>
+      <Modified>2021-09-03T20:41:59.700</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\DealOrNoDeal.Tests.pdb">
       <PackagePath>DealOrNoDeal.Tests.pdb</PackagePath>
-      <Modified>2021-09-03T19:39:50.351</Modified>
+      <Modified>2021-09-03T20:42:09.545</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.pdb">
       <PackagePath>DealOrNoDeal.pdb</PackagePath>
-      <Modified>2021-09-03T19:39:41.198</Modified>
+      <Modified>2021-09-03T20:41:59.700</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\TestPlatform.Universal\16.0\References\CommonConfiguration\neutral\testhost.dll">
       <PackagePath>testhost.dll</PackagePath>
@@ -166,15 +166,15 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\UnitTestApp.xbf">
       <PackagePath>UnitTestApp.xbf</PackagePath>
-      <Modified>2021-09-03T19:39:50.205</Modified>
+      <Modified>2021-09-03T20:42:09.390</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2021-09-03T19:39:41.018</Modified>
+      <Modified>2021-09-03T20:27:33.834</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\View\DealOrNoDealPage.xbf">
       <PackagePath>View\DealOrNoDealPage.xbf</PackagePath>
-      <Modified>2021-09-03T19:39:41.018</Modified>
+      <Modified>2021-09-03T20:27:33.833</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\Assets\DealOrNoDealHeader.jpg">
       <PackagePath>Assets\DealOrNoDealHeader.jpg</PackagePath>
@@ -190,11 +190,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2021-09-03T19:39:50.753</Modified>
+      <Modified>2021-09-03T20:42:09.946</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\Core\DealOrNoDeal.Tests.exe">
       <PackagePath>DealOrNoDeal.Tests.exe</PackagePath>
-      <Modified>2021-09-03T19:39:51.659</Modified>
+      <Modified>2021-09-03T20:42:10.709</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

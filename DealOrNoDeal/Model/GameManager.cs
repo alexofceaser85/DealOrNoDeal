@@ -14,19 +14,14 @@ namespace DealOrNoDeal.Model
     {
         #region Data members
 
-        private const int InitialCurrentRound = 1;
-        private const int InitialCasesLeftForCurrentRound = 6;
         private const int InitialPlayerSelectedStartingCase = -1;
-
         private readonly IList<int> briefCaseDollarAmounts = new List<int> {
             0, 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000,
             200000, 300000, 400000, 500000, 750000, 1000000
         };
 
-        private IList<Briefcase> theBriefcases;
-        private int currentRound;
-        private int casesLeftForCurrentRound;
         private int playerSelectedStartingCase;
+        private IList<Briefcase> theBriefcases;
 
         #endregion
 
@@ -48,58 +43,14 @@ namespace DealOrNoDeal.Model
         public Banker Banker { get; }
 
         /// <summary>
-        ///     The current round that the game is on
-        ///     Precondition:
-        ///     value >= 1
-        ///     Postcondition:
-        ///     this.currentRound == value
-        /// </summary>
-        /// <value>The game's current round.</value>
-        public int CurrentRound
-        {
-            get => this.currentRound;
-            set
-            {
-                if (value < 1)
-                {
-                    throw new ArgumentException(
-                        GameManagerErrorMessages.ShouldNotSetCurrentRoundToLessThanOne);
-                }
-
-                this.currentRound = value;
-            }
-        }
-
-        /// <summary>
-        ///     The number of cases that are available for selection by the player for each new round
+        ///     The round manager for the game
+        ///
         ///     Precondition: None
         ///     Postcondition: None
         /// </summary>
-        public int CasesAvailableForCurrentRound { get; private set; }
+        public RoundManager RoundManager { get; }
 
-        /// <summary>
-        ///     The cases left for the game's current round
-        ///     Precondition:
-        ///     value >= 0
-        ///     Postcondition:
-        ///     this.casesLeftForCurrentRound == value
-        /// </summary>
-        /// <value>The cases left for current round.</value>
-        public int CasesLeftForCurrentRound
-        {
-            get => this.casesLeftForCurrentRound;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException(GameManagerErrorMessages
-                        .ShouldNotSetCasesLeftForCurrentRoundToLessThanZero);
-                }
-
-                this.casesLeftForCurrentRound = value;
-            }
-        }
-
+        #endregion
         /// <summary>
         ///     The case that is selected by the player at the start of the game
         /// </summary>
@@ -123,43 +74,38 @@ namespace DealOrNoDeal.Model
             }
         }
 
-        #endregion
-
         #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GameManager" /> class.
         ///     Precondition: None
         ///     Postcondition:
-        ///     this.theBriefcases.Count > 0
-        ///     AND this.CurrentRound == InitialCurrentRound;
-        ///     AND this.CasesLeftForCurrentRound == InitialCasesLeftForCurrentRound;
-        ///     AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
+        ///     this.RoundManager = new RoundManager(casesToOpenForEachRound)
         ///     AND this.Banker == new Banker()
+        ///     AND this.theBriefcases.Count > 0
+        ///     AND this.IsSelectingStartingCase = true
+        ///     AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
         /// </summary>
-        public GameManager()
+        /// <param name="casesToOpenForEachRound">The cases than can be opened for each round</param>
+        public GameManager(IList<int> casesToOpenForEachRound)
         {
-            var randomIndexesToAccessBriefcaseDollarAmounts = getRandomIndexesToAccessDollarValues(
+            this.RoundManager = new RoundManager(casesToOpenForEachRound);
+            this.Banker = new Banker();
+
+            var randomIndexesToAccessBriefcaseDollarAmounts = this.getRandomIndexesToAccessDollarValues(
                 this.briefCaseDollarAmounts.Count, 0,
                 this.briefCaseDollarAmounts.Count);
 
             this.PopulateBriefcases(randomIndexesToAccessBriefcaseDollarAmounts, this.briefCaseDollarAmounts);
             this.IsSelectingStartingCase = true;
-
-            this.CurrentRound = InitialCurrentRound;
-            this.CasesAvailableForCurrentRound = InitialCasesLeftForCurrentRound;
-            this.CasesLeftForCurrentRound = InitialCasesLeftForCurrentRound;
-
             this.PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
-
-            this.Banker = new Banker();
         }
 
         #endregion
 
         #region Methods
 
-        private static IList<int> getRandomIndexesToAccessDollarValues(int numberOfIndexesToGenerate,
+        private IList<int> getRandomIndexesToAccessDollarValues(int numberOfIndexesToGenerate,
             int minimumValueToGenerate, int maximumValueToGenerate)
         {
             var randomNumberGenerator = new Random();
@@ -274,7 +220,7 @@ namespace DealOrNoDeal.Model
         /// <returns>The current banker offer</returns>
         public int GetOffer()
         {
-            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.CasesLeftForCurrentRound);
+            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.RoundManager.CasesLeftForCurrentRound);
             return bankerOffer;
         }
 
@@ -282,19 +228,11 @@ namespace DealOrNoDeal.Model
         ///     Moves to next round by incrementing Round property and setting
         ///     initial number of cases for that round
         ///     Precondition: None
-        ///     Postcondition:
-        ///     Round == Round@prev + 1
-        ///     AND CasesRemainingInRound == (number of cases to open in the next round)
+        ///     Postcondition: None
         /// </summary>
         public void MoveToNextRound()
         {
-            this.CurrentRound++;
-            if (this.CasesAvailableForCurrentRound > 1)
-            {
-                this.CasesAvailableForCurrentRound--;
-            }
-
-            this.CasesLeftForCurrentRound = this.CasesAvailableForCurrentRound;
+            this.RoundManager.MoveToNextRound();
         }
 
         #endregion

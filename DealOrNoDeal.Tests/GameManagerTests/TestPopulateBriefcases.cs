@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DealOrNoDeal.Data;
 using DealOrNoDeal.ErrorMessages;
 using DealOrNoDeal.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotAllowNullDollarValuesToPopulate()
         {
-            var gameManager = new GameManager();
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -25,7 +26,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotAllowNullIndexesOfDollarValuesToPopulate()
         {
-            var gameManager = new GameManager();
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -38,7 +39,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldPopulateBriefcases()
         {
-            var gameManager = new GameManager();
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
