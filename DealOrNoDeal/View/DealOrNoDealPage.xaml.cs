@@ -37,10 +37,13 @@ namespace DealOrNoDeal.View
         private const string TellUserThatThisRoundIsTheFinalRoundMessage = "This is the final round";
         private const string AskUserDealOrNoDeal = "Deal or No Deal?";
 
+        private const string BankerOfferFormatOption = "C";
+
         private const int FinalRound = 10;
         private const int CasesLeftToEndRound = 0;
 
         private string formattedBankerCurrentOffer;
+        private string formattedBankerAverageOffer;
         private string formattedBankerMinimumOffer;
         private string formattedBankerMaximumOffer;
 
@@ -251,9 +254,10 @@ namespace DealOrNoDeal.View
         private void updateFormattedBankerOffers()
         {
             this.theGameManager.GetOffer();
-            this.formattedBankerCurrentOffer = this.theGameManager.Banker.CurrentOffer.ToString("C");
-            this.formattedBankerMinimumOffer = this.theGameManager.Banker.MinimumOffer.ToString("C");
-            this.formattedBankerMaximumOffer = this.theGameManager.Banker.MaximumOffer.ToString("C");
+            this.formattedBankerCurrentOffer = this.theGameManager.Banker.CurrentOffer.ToString(BankerOfferFormatOption);
+            this.formattedBankerAverageOffer = this.theGameManager.Banker.AverageOffer.ToString(BankerOfferFormatOption);
+            this.formattedBankerMinimumOffer = this.theGameManager.Banker.MinimumOffer.ToString(BankerOfferFormatOption);
+            this.formattedBankerMaximumOffer = this.theGameManager.Banker.MaximumOffer.ToString(BankerOfferFormatOption);
         }
 
         private void displayRoundInformationNeededForFinalRound()
@@ -434,7 +438,8 @@ namespace DealOrNoDeal.View
         private void displaySummaryInformationForFinalRound()
         {
             var bankerMinimumOfferAndBankerMaximumOfferMessage =
-                $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n";
+                $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n"
+                + $"Average: {this.formattedBankerAverageOffer}";
             this.summaryOutput.Text = bankerMinimumOfferAndBankerMaximumOfferMessage;
         }
 
@@ -479,7 +484,7 @@ namespace DealOrNoDeal.View
         {
             this.summaryOutput.Text =
                 $"Offers : Min: {this.formattedBankerMinimumOffer} Max: {this.formattedBankerMaximumOffer}\n"
-                + $"Last offer: {this.formattedBankerCurrentOffer}\n";
+                + $"Last offer: {this.formattedBankerAverageOffer}\n";
         }
 
         #endregion

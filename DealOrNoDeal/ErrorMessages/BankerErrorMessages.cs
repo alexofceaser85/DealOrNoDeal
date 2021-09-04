@@ -26,10 +26,16 @@ namespace DealOrNoDeal.ErrorMessages
             "Cannot calculate the banker offer if the briefcases still in play are less than or equal to zero";
 
         /// <summary>
-        /// The error message that tells the user that they should not set initial banker current offer to less than zero
+        /// The error message that tells the user that they should not set the banker current offer to less than zero
         /// </summary>
         public const string ShouldNotSetCurrentOfferToLessThanZero =
             "Cannot set the current banker offer to a value less than zero";
+
+        /// <summary>
+        /// The error  message that tells the user that they should not set the banker average offer to a value less than zero
+        /// </summary>
+        public const string ShouldNotSetAverageOfferToLessThanZero =
+            "Cannot set the average offer to a value less than zero";
 
         /// <summary>
         /// The error message that tells the user that they should not set banker minimum offer to less than zero

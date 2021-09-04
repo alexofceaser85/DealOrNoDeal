@@ -13,10 +13,13 @@ namespace DealOrNoDeal.Model
     public class Banker
     {
         private const int InitialCurrentOffer = 0;
+        private const int InitialAverageOffer = 0;
         private const int InitialMinimumOffer = int.MaxValue;
         private const int InitialMaximumOffer = int.MinValue;
 
+        private List<int> previousOffers;
         private int currentOffer;
+        private int averageOffer;
         private int minimumOffer;
         private int maximumOffer;
 
@@ -31,7 +34,7 @@ namespace DealOrNoDeal.Model
         public int CurrentOffer
         {
             get => this.currentOffer;
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -40,6 +43,20 @@ namespace DealOrNoDeal.Model
                 }
 
                 this.currentOffer = value;
+            }
+        }
+
+        public int AverageOffer
+        {
+            get => this.averageOffer;
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException(BankerErrorMessages.ShouldNotSetAverageOfferToLessThanZero);
+                }
+
+                this.averageOffer = value;
             }
         }
 
@@ -55,7 +72,7 @@ namespace DealOrNoDeal.Model
         public int MinimumOffer
         {
             get => this.minimumOffer;
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -85,7 +102,7 @@ namespace DealOrNoDeal.Model
         public int MaximumOffer
         {
             get => this.maximumOffer;
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -108,13 +125,16 @@ namespace DealOrNoDeal.Model
         ///
         /// Precondition: None
         /// Postcondition:
+        ///     this.previousOffers = new List&lt;int&gt;
         ///     this.currentOffer == 0
         ///     this.minimumOffer == int.MaxValue
         ///     this.maximumOffer == int.MinValue
         /// </summary>
         public Banker()
         {
+            this.previousOffers = new List<int>();
             this.CurrentOffer = InitialCurrentOffer;
+            this.AverageOffer = InitialAverageOffer;
             this.minimumOffer = InitialMinimumOffer;
             this.maximumOffer = InitialMaximumOffer;
         }
@@ -147,6 +167,7 @@ namespace DealOrNoDeal.Model
 
             var unRoundedOffer = calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
             var roundedOffer = roundOfferToNearestOneHundred(unRoundedOffer);
+            this.previousOffers.Add(roundedOffer);
             this.updateOffers(roundedOffer);
             return roundedOffer;
         }
@@ -171,15 +192,29 @@ namespace DealOrNoDeal.Model
         private void updateOffers(int bankerOffer)
         {
             this.CurrentOffer = bankerOffer;
-            if (this.minimumOffer > bankerOffer)
+            this.AverageOffer = this.calculateAverageOffer();
+
+            if (this.MinimumOffer > bankerOffer)
             {
-                this.minimumOffer = bankerOffer;
+                this.MinimumOffer = bankerOffer;
             }
 
-            if (this.maximumOffer < bankerOffer)
+            if (this.MaximumOffer < bankerOffer)
             {
-                this.maximumOffer = bankerOffer;
+                this.MaximumOffer = bankerOffer;
             }
+        }
+
+        private int calculateAverageOffer()
+        {
+            int totalOffer = 0;
+
+            foreach (int offer in this.previousOffers)
+            {
+                totalOffer += offer;
+            }
+
+            return totalOffer / this.previousOffers.Count;
         }
 
     }

@@ -178,5 +178,33 @@ namespace DealOrNoDeal.Tests.BankerTests
 
             Assert.AreEqual(0, banker.CalculateOffer(briefcases, 1));
         }
+
+        [TestMethod]
+        public void ShouldUpdateMaximumAndMinimumAndAverageOffersForOneData()
+        {
+            Banker banker = new Banker();
+            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+
+            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
+
+            Assert.AreEqual(131500, banker.MaximumOffer);
+            Assert.AreEqual(131500, banker.MinimumOffer);
+            Assert.AreEqual(131500, banker.AverageOffer);
+        }
+
+        [TestMethod]
+        public void ShouldUpdateMaximumAndMinimumAndAverageOffersForManyData()
+        {
+            Banker banker = new Banker();
+            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+
+            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(21900, banker.CalculateOffer(briefcases, 6));
+            Assert.AreEqual(11000, banker.CalculateOffer(briefcases, 12));
+
+            Assert.AreEqual(131500, banker.MaximumOffer);
+            Assert.AreEqual(11000, banker.MinimumOffer);
+            Assert.AreEqual(54800, banker.AverageOffer);
+        }
     }
 }
