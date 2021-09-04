@@ -9,89 +9,66 @@ namespace DealOrNoDeal.Tests.GameManagerTests
     public class TestRemoveBriefcaseFromPlay
     {
         [TestMethod]
-        public void ShouldNotRemoveOneBriefcaseIfNotPresentInListOfOneBriefcase()
+        public void ShouldNotRemoveBriefcaseFromEmptyList()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0 };
-            IList<int> dollarValues = new List<int> { 10 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>(), new List<int>());
 
-            Assert.AreEqual(-1, gameManager.RemoveBriefcaseFromPlay(5));
-
-            Assert.AreEqual(10, gameManager.GetBriefcaseValue(0));
+            Assert.AreEqual(-1, manager.RemoveBriefcaseFromPlay(1));
+            Assert.AreEqual(0, manager.RoundManager.CasesLeftForCurrentRound);
         }
 
         [TestMethod]
-        public void ShouldRemoveOneBriefcaseIfOnlyBriefcaseInList()
+        public void ShouldNotRemoveBriefcaseIfBriefcaseIsNotPresentInListOfOneItem()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0 };
-            IList<int> dollarValues = new List<int> { 10 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 1 }, new List<int>() { 10 });
 
-            Assert.AreEqual(10, gameManager.RemoveBriefcaseFromPlay(0));
-
-            Assert.AreEqual(-1, gameManager.GetBriefcaseValue(0));
+            Assert.AreEqual(-1, manager.RemoveBriefcaseFromPlay(1));
+            Assert.AreEqual(0, manager.RoundManager.CasesLeftForCurrentRound);
         }
 
         [TestMethod]
-        public void ShouldRemoveFirstOfManyBriefcases()
+        public void ShouldNotRemoveBriefcaseIfBriefcaseIsNotPresentInListOfManyItems()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 1, 2, 3 }, new List<int>() { 10, 20, 30 });
 
-            Assert.AreEqual(5, gameManager.RemoveBriefcaseFromPlay(0));
-
-            Assert.AreEqual(-1, gameManager.GetBriefcaseValue(0));
-            Assert.AreEqual(1, gameManager.GetBriefcaseValue(1));
-            Assert.AreEqual(3, gameManager.GetBriefcaseValue(2));
+            Assert.AreEqual(-1, manager.RemoveBriefcaseFromPlay(4));
+            Assert.AreEqual(0, manager.RoundManager.CasesLeftForCurrentRound);
         }
 
         [TestMethod]
-        public void ShouldRemoveMiddleOfManyBriefcases()
+        public void ShouldRemoveOnlyBriefcaseInList()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 1 }, new List<int>() { 10 });
 
-            Assert.AreEqual(1, gameManager.RemoveBriefcaseFromPlay(1));
-
-            Assert.AreEqual(5, gameManager.GetBriefcaseValue(0));
-            Assert.AreEqual(-1, gameManager.GetBriefcaseValue(1));
-            Assert.AreEqual(3, gameManager.GetBriefcaseValue(2));
+            Assert.AreEqual(10, manager.RemoveBriefcaseFromPlay(0));
+            Assert.AreEqual(0, manager.RoundManager.CasesLeftForCurrentRound);
         }
 
         [TestMethod]
-        public void ShouldRemoveLastOfManyBriefcases()
+        public void ShouldRemoveFirstBriefcase()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 2, 1 }, new List<int>() { 10, 20, 30, 40 });
 
-            Assert.AreEqual(3, gameManager.RemoveBriefcaseFromPlay(2));
-
-            Assert.AreEqual(5, gameManager.GetBriefcaseValue(0));
-            Assert.AreEqual(1, gameManager.GetBriefcaseValue(1));
-            Assert.AreEqual(-1, gameManager.GetBriefcaseValue(2));
+            Assert.AreNotEqual(-1, manager.RemoveBriefcaseFromPlay(0));
+            Assert.AreEqual(1, manager.RoundManager.CasesLeftForCurrentRound);
         }
 
         [TestMethod]
-        public void ShouldNotRemoveBriefcaseIfItIsNotPresentInListOfManyBriefcases()
+        public void ShouldRemoveMiddleBriefcase()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 2, 1 }, new List<int>() { 10, 20, 30, 40 });
 
-            Assert.AreEqual(-1, gameManager.RemoveBriefcaseFromPlay(10));
+            Assert.AreNotEqual(-1, manager.RemoveBriefcaseFromPlay(1));
+            Assert.AreEqual(1, manager.RoundManager.CasesLeftForCurrentRound);
+        }
 
-            Assert.AreEqual(5, gameManager.GetBriefcaseValue(0));
-            Assert.AreEqual(1, gameManager.GetBriefcaseValue(1));
-            Assert.AreEqual(3, gameManager.GetBriefcaseValue(2));
+        [TestMethod]
+        public void ShouldRemoveLastBriefcase()
+        {
+            GameManager manager = new GameManager(new List<int>() { 2, 1 }, new List<int>() { 10, 20, 30, 40 });
+
+            Assert.AreNotEqual(-1, manager.RemoveBriefcaseFromPlay(2));
+            Assert.AreEqual(1, manager.RoundManager.CasesLeftForCurrentRound);
         }
     }
 }

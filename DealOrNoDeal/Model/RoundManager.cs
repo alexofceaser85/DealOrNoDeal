@@ -144,18 +144,45 @@ namespace DealOrNoDeal.Model
         /// </summary>
         public void MoveToNextRound()
         {
-            if (this.indexOfAvailableCasesForNextRound < this.CasesAvailableForEachRound.Count - 1)
-            {
-                this.indexOfAvailableCasesForNextRound += 1;
-                this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
-            }
+            this.updateCurrentRoundBriefcaseInformation();
+            this.updateNextRoundBriefcaseInformation();
+
             this.CurrentRound++;
+        }
+
+        private void updateCurrentRoundBriefcaseInformation()
+        {
             if (this.CasesAvailableForCurrentRound > 1)
             {
-                this.CasesAvailableForCurrentRound--;
+                this.CasesAvailableForCurrentRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
             }
 
             this.CasesLeftForCurrentRound = this.CasesAvailableForCurrentRound;
+        }
+
+        private void updateNextRoundBriefcaseInformation()
+        {
+            if (this.indexOfAvailableCasesForNextRound >= this.CasesAvailableForEachRound.Count - 1)
+            {
+                return;
+            }
+            this.indexOfAvailableCasesForNextRound += 1;
+            this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
+        }
+
+        /// <summary>
+        /// Decrements the current round by one
+        ///
+        /// Precondition: None
+        /// Postcondition: this.currentRound@prev == this.currentRound - 1
+        /// </summary>
+        /// <return>Zero if the current round is one or less and current one minus one otherwise</return>
+        public void DecrementCasesLeftForCurrentRound()
+        {
+            if (this.CasesLeftForCurrentRound > 0)
+            {
+                this.CasesLeftForCurrentRound--;
+            }
         }
     }
 }

@@ -8,78 +8,60 @@ namespace DealOrNoDeal.Tests.GameManagerTests
     [TestClass]
     public class TestGetBriefcaseValue
     {
-
         [TestMethod]
-        public void ShouldGetBriefcaseIfBriefcaseIsInGameManager()
+        public void ShouldNotGetValueFromEmptyBriefcaseManager()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0 };
-            IList<int> dollarValues = new List<int> { 1 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>(), new List<int>());
 
-            var briefcase = gameManager.GetBriefcaseValue(0);
-
-            Assert.AreEqual(1, briefcase);
+            Assert.AreEqual(-1, manager.GetBriefcaseValue(0));
         }
 
         [TestMethod]
-        public void ShouldNotGetBriefcaseIfBriefcaseIsNotInGameManager()
+        public void ShouldGetOnlyItemInList()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0 };
-            IList<int> dollarValues = new List<int> { 1 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 1 }, new List<int>() { 10 });
 
-            var briefcase = gameManager.GetBriefcaseValue(1);
-            Assert.AreEqual(-1, briefcase);
+            Assert.AreEqual(10, manager.GetBriefcaseValue(0));
         }
 
         [TestMethod]
-        public void ShouldGetFirstOfManyBriefcases()
+        public void ShouldNotGetItemThatIsNotPresentInOneItem()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 1 }, new List<int>() { 10 });
 
-            var briefcase = gameManager.GetBriefcaseValue(0);
-            Assert.AreEqual(1, briefcase);
+            Assert.AreEqual(-1, manager.GetBriefcaseValue(1));
         }
 
         [TestMethod]
-        public void ShouldGetMiddleOfManyBriefcases()
+        public void ShouldNotGetItemThatIsNotPresentInManyItems()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 3, 2, 1 }, new List<int>() { 10, 20, 30 });
 
-            var briefcase = gameManager.GetBriefcaseValue(1);
-            Assert.AreEqual(3, briefcase);
+            Assert.AreEqual(-1, manager.GetBriefcaseValue(4));
         }
 
         [TestMethod]
-        public void ShouldGetLastOfManyBriefcases()
+        public void ShouldGetFirstItem()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 3, 2, 1 }, new List<int>() { 10, 20, 30 });
 
-            var briefcase = gameManager.GetBriefcaseValue(2);
-            Assert.AreEqual(5, briefcase);
+            Assert.AreNotEqual(-1, manager.GetBriefcaseValue(0));
         }
 
         [TestMethod]
-        public void ShouldNotGetBriefcaseIfNotPresentInListOfManyBriefcases()
+        public void ShouldGetMiddleItem()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
-            IList<int> mockRandomIndexes = new List<int> { 0, 1, 2 };
-            IList<int> dollarValues = new List<int> { 1, 3, 5 };
-            gameManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
+            GameManager manager = new GameManager(new List<int>() { 3, 2, 1 }, new List<int>() { 10, 20, 30 });
 
-            var briefcase = gameManager.GetBriefcaseValue(10);
-            Assert.AreEqual(-1, briefcase);
+            Assert.AreNotEqual(-1, manager.GetBriefcaseValue(1));
+        }
+
+        [TestMethod]
+        public void ShouldGetLastItem()
+        {
+            GameManager manager = new GameManager(new List<int>() { 3, 2, 1 }, new List<int>() { 10, 20, 30 });
+
+            Assert.AreNotEqual(-1, manager.GetBriefcaseValue(0));
         }
     }
 }

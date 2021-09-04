@@ -15,14 +15,8 @@ namespace DealOrNoDeal.Model
         #region Data members
 
         private const int InitialPlayerSelectedStartingCase = -1;
-        private readonly IList<int> briefCaseDollarAmounts = new List<int> {
-            0, 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000,
-            200000, 300000, 400000, 500000, 750000, 1000000
-        };
 
         private int playerSelectedStartingCase;
-        private IList<Briefcase> theBriefcases;
-
         #endregion
 
         #region Properties
@@ -49,6 +43,14 @@ namespace DealOrNoDeal.Model
         ///     Postcondition: None
         /// </summary>
         public RoundManager RoundManager { get; }
+
+        /// <summary>
+        /// The briefcase manager for the game
+        ///
+        /// Precondition: None
+        /// Postcondition: None
+        /// </summary>
+        public BriefcaseManager BriefcaseManager { get; }
 
         #endregion
         /// <summary>
@@ -81,22 +83,19 @@ namespace DealOrNoDeal.Model
         ///     Precondition: None
         ///     Postcondition:
         ///     this.RoundManager = new RoundManager(casesToOpenForEachRound)
+        ///     AND this.BriefcaseManager = new BriefcaseManager(briefcaseDollarAmounts)
         ///     AND this.Banker == new Banker()
-        ///     AND this.theBriefcases.Count > 0
         ///     AND this.IsSelectingStartingCase = true
         ///     AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
         /// </summary>
         /// <param name="casesToOpenForEachRound">The cases than can be opened for each round</param>
-        public GameManager(IList<int> casesToOpenForEachRound)
+        /// <param name="dollarAmountsForEachRound">The dollar amounts of the cases</param>
+        public GameManager(IList<int> casesToOpenForEachRound, IList<int> dollarAmountsForEachRound)
         {
             this.RoundManager = new RoundManager(casesToOpenForEachRound);
+            this.BriefcaseManager = new BriefcaseManager(dollarAmountsForEachRound);
             this.Banker = new Banker();
 
-            var randomIndexesToAccessBriefcaseDollarAmounts = this.getRandomIndexesToAccessDollarValues(
-                this.briefCaseDollarAmounts.Count, 0,
-                this.briefCaseDollarAmounts.Count);
-
-            this.PopulateBriefcases(randomIndexesToAccessBriefcaseDollarAmounts, this.briefCaseDollarAmounts);
             this.IsSelectingStartingCase = true;
             this.PlayerSelectedStartingCase = InitialPlayerSelectedStartingCase;
         }
@@ -104,68 +103,6 @@ namespace DealOrNoDeal.Model
         #endregion
 
         #region Methods
-
-        private IList<int> getRandomIndexesToAccessDollarValues(int numberOfIndexesToGenerate,
-            int minimumValueToGenerate, int maximumValueToGenerate)
-        {
-            var randomNumberGenerator = new Random();
-            IList<int> randomIndexes = new List<int>();
-            IList<int> previousIndexes = new List<int>();
-
-            for (var counter = 0; counter < numberOfIndexesToGenerate; counter++)
-            {
-                int currentIndex;
-                do
-                {
-                    currentIndex = randomNumberGenerator.Next(minimumValueToGenerate, maximumValueToGenerate);
-                } while (previousIndexes.Contains(currentIndex));
-
-                randomIndexes.Add(currentIndex);
-                previousIndexes.Add(currentIndex);
-            }
-
-            return randomIndexes;
-        }
-
-        /// <summary>
-        ///     Populates the briefcases
-        ///     Precondition:
-        ///     indexesOfDollarValuesToPopulate != null
-        ///     AND dollarValuesToPopulate != null
-        ///     Postcondition:
-        ///     this.theBriefcases = thePopulatedBriefcases
-        /// </summary>
-        /// <param name="indexesOfDollarValuesToPopulate">
-        ///     The index of the array element which is used to get a value from the
-        ///     dollar values
-        /// </param>
-        /// <param name="dollarValuesToPopulate">The dollar values which are to be accessed</param>
-        /// <return>The populated briefcases</return>
-        public void PopulateBriefcases(IList<int> indexesOfDollarValuesToPopulate, IList<int> dollarValuesToPopulate)
-        {
-            if (indexesOfDollarValuesToPopulate == null)
-            {
-                throw new ArgumentException(GameManagerErrorMessages
-                    .ShouldNotPopulateBriefcasesIfIndexesOfDollarValuesAreNull);
-            }
-
-            if (dollarValuesToPopulate == null)
-            {
-                throw new ArgumentException(GameManagerErrorMessages
-                    .ShouldNotPopulateBriefcasesIfDollarValuesAreNull);
-            }
-
-            IList<Briefcase> thePopulatedBriefcases = new List<Briefcase>();
-
-            for (var counter = 0; counter < indexesOfDollarValuesToPopulate.Count; counter++)
-            {
-                var currentDollarAmountIndex = indexesOfDollarValuesToPopulate[counter];
-                var newBriefcase = new Briefcase(counter, dollarValuesToPopulate[currentDollarAmountIndex]);
-                thePopulatedBriefcases.Add(newBriefcase);
-            }
-
-            this.theBriefcases = thePopulatedBriefcases;
-        }
 
         /// <summary>
         ///     Gets the briefcase value.
@@ -178,19 +115,7 @@ namespace DealOrNoDeal.Model
         /// </returns>
         public int GetBriefcaseValue(int briefcaseIdToGet)
         {
-            var theSelectedBriefcase = this.getBriefcaseById(briefcaseIdToGet);
-
-            if (theSelectedBriefcase == null)
-            {
-                return -1;
-            }
-
-            return theSelectedBriefcase.DollarAmount;
-        }
-
-        private Briefcase getBriefcaseById(int briefcaseIdToGet)
-        {
-            return this.theBriefcases.SingleOrDefault(p => p.BriefcaseId == briefcaseIdToGet);
+            return this.BriefcaseManager.GetBriefcaseValue(briefcaseIdToGet);
         }
 
         /// <summary>
@@ -202,15 +127,10 @@ namespace DealOrNoDeal.Model
         /// <returns>Dollar amount stored in the case, or -1 if case not found.</returns>
         public int RemoveBriefcaseFromPlay(int id)
         {
-            var briefcaseToRemove = this.getBriefcaseById(id);
-            if (briefcaseToRemove == null)
-            {
-                return -1;
-            }
+            var removedBriefcaseDollarAmount = this.BriefcaseManager.RemoveBriefcase(id);
+            this.RoundManager.DecrementCasesLeftForCurrentRound();
 
-            this.theBriefcases.Remove(this.getBriefcaseById(id));
-            this.RoundManager.CasesLeftForCurrentRound--;
-            return briefcaseToRemove.DollarAmount;
+            return removedBriefcaseDollarAmount;
         }
 
         /// <summary>
@@ -221,7 +141,7 @@ namespace DealOrNoDeal.Model
         /// <returns>The current banker offer</returns>
         public int GetOffer()
         {
-            var bankerOffer = this.Banker.CalculateOffer(this.theBriefcases, this.RoundManager.CasesAvailableForNextRound);
+            var bankerOffer = this.Banker.CalculateOffer(this.BriefcaseManager.Briefcases, this.RoundManager.CasesAvailableForNextRound);
             return bankerOffer;
         }
 

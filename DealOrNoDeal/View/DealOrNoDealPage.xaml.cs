@@ -65,7 +65,7 @@ namespace DealOrNoDeal.View
         {
             this.InitializeComponent();
             this.initializeUiDataAndControls();
-            this.theGameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            this.theGameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
 
             this.toggleDealButtonAndNoDealButtonVisibility();
         }

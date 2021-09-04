@@ -12,7 +12,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldInitializeDefaultValues()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
             Assert.AreEqual(true, gameManager.IsSelectingStartingCase);
             Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             Assert.IsNotNull(gameManager.RoundManager);
@@ -23,7 +23,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetThePlayerSelectedStartingCaseToOneLessThanMinimum()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
                 gameManager.PlayerSelectedStartingCase = -2;
@@ -35,7 +35,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldNotSetThePlayerSelectedStartingCaseToWellLessThanMinimum()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
                 gameManager.PlayerSelectedStartingCase = -100;
@@ -47,7 +47,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldSetThePlayerSelectedStartingCaseToMinimumValue()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES)
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion)
             {
                 PlayerSelectedStartingCase = 5
             };
@@ -59,7 +59,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldSetThePlayerSelectedStartingCaseToOneAboveMinimumValue()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
             Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             gameManager.PlayerSelectedStartingCase = 2;
             Assert.AreEqual(2, gameManager.PlayerSelectedStartingCase);
@@ -68,7 +68,7 @@ namespace DealOrNoDeal.Tests.GameManagerTests
         [TestMethod]
         public void ShouldSetThePlayerSelectedStartingCaseToWellAboveMinimumValue()
         {
-            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var gameManager = new GameManager(CasesToOpenForEachRound.TEN_ROUND_CASES, DollarValuesForEachRound.RegularVersion);
             Assert.AreEqual(-1, gameManager.PlayerSelectedStartingCase);
             gameManager.PlayerSelectedStartingCase = 100;
             Assert.AreEqual(100, gameManager.PlayerSelectedStartingCase);
