@@ -103,11 +103,6 @@ namespace DealOrNoDeal.Model
                     .ShouldNotPopulateBriefcasesIfDollarValuesAreNull);
             }
 
-            this.Briefcases = this.createPopulatedBriefcases(indexesOfDollarValuesToPopulate, dollarValuesToPopulate);
-        }
-
-        private IList<Briefcase> createPopulatedBriefcases(IList<int> indexesOfDollarValuesToPopulate, IList<int> dollarValuesToPopulate)
-        {
             IList<Briefcase> populatedBriefcases = new List<Briefcase>();
 
             for (var counter = 0; counter < indexesOfDollarValuesToPopulate.Count; counter++)
@@ -117,7 +112,7 @@ namespace DealOrNoDeal.Model
                 populatedBriefcases.Add(newBriefcase);
             }
 
-            return populatedBriefcases;
+            this.Briefcases = populatedBriefcases;
         }
 
         /// <summary>

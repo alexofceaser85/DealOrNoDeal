@@ -127,8 +127,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\CasesToOpenForEachRound.cs" />
-    <Compile Include="Data\DollarValuesForEachRound.cs" />
+    <Compile Include="Data\Rounds\CasesToOpenForEachRound.cs" />
+    <Compile Include="Data\Rounds\DollarValuesForEachRound.cs" />
+    <Compile Include="Data\Settings\CasesToOpenSettings.cs" />
+    <Compile Include="Data\Settings\DollarValuesForRoundSettings.cs" />
     <Compile Include="ErrorMessages\BankerErrorMessages.cs" />
     <Compile Include="ErrorMessages\BriefcaseErrorMessages.cs" />
     <Compile Include="ErrorMessages\BriefcaseManagerErrorMessages.cs" />
@@ -138,11 +140,20 @@
     <Compile Include="Model\Briefcase.cs" />
     <Compile Include="Model\BriefcaseManager.cs" />
     <Compile Include="Model\GameManager.cs" />
+    <Compile Include="Model\GameSettings.cs" />
     <Compile Include="Model\RoundManager.cs" />
     <Compile Include="View\DealOrNoDealPage.xaml.cs">
       <DependentUpon>DealOrNoDealPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateBriefcaseButtons.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateDealAndNoDealButton.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateDollarLabels.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\FormattedBriefcaseValue.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\FormattedOffers.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateRoundOutput.cs" />
+    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateSummaryOutput.cs" />
+    <Compile Include="View\UserSettings\UsersGameSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

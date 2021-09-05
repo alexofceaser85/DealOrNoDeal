@@ -15,7 +15,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldNotRemoveOneBriefcaseIfNotPresentInListOfOneBriefcase()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 0 };
             IList<int> dollarValues = new List<int> { 10 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
@@ -28,7 +28,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldRemoveOneBriefcaseIfOnlyBriefcaseInList()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 0 };
             IList<int> dollarValues = new List<int> { 10 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
@@ -41,7 +41,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldRemoveFirstOfManyBriefcases()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
@@ -56,7 +56,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldRemoveMiddleOfManyBriefcases()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
@@ -71,7 +71,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldRemoveLastOfManyBriefcases()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
@@ -86,7 +86,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldNotRemoveBriefcaseIfItIsNotPresentInListOfManyBriefcases()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);

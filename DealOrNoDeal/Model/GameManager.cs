@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DealOrNoDeal.Data;
 using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
@@ -17,6 +18,7 @@ namespace DealOrNoDeal.Model
         private const int InitialPlayerSelectedStartingCase = -1;
 
         private int playerSelectedStartingCase;
+        private int playerSelectedStartingCaseDollarAmount;
         #endregion
 
         #region Properties
@@ -54,12 +56,12 @@ namespace DealOrNoDeal.Model
 
         #endregion
         /// <summary>
-        ///     The case that is selected by the player at the start of the game
-        /// </summary>
+        /// The case that is selected by the player at the start of the game
         /// Precondition:
         /// value >= InitialPlayerSelectedStartingCase
         /// Postcondition:
         /// this.playerSelectedStartingCase == value
+        /// </summary>
         /// <value>The case selected by the player at the start of the game.</value>
         public int PlayerSelectedStartingCase
         {
@@ -73,6 +75,28 @@ namespace DealOrNoDeal.Model
                 }
 
                 this.playerSelectedStartingCase = value;
+            }
+        }
+
+        /// <summary>
+        /// The dollar amount of the case that is selected by the player at the start of the game
+        /// Precondition:
+        /// value >= InitialPlayerSelectedStartingCaseDollarAmount
+        /// Postcondition:
+        /// this.playerSelectedStartingCaseDollarAmount == value
+        /// </summary>
+        /// <value>The dollar amount of the case selected by the player at the start of the game</value>
+        public int PlayerSelectedStartingCaseDollarAmount
+        {
+            get => this.playerSelectedStartingCaseDollarAmount;
+            set
+            {
+                if (value < 0)
+                {
+
+                }
+
+                this.playerSelectedStartingCaseDollarAmount = value;
             }
         }
 

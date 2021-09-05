@@ -130,6 +130,7 @@
     <Compile Include="BriefcaseManagerTests\TestPopulateBriefcases.cs" />
     <Compile Include="GameManagerTests\TestMoveToNextRound.cs" />
     <Compile Include="GameManagerTests\TestRemoveBriefcaseFromPlay.cs" />
+    <Compile Include="GameSettings\TestConstructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoundManager\TestDecrementCasesLeftForCurrentRound.cs" />
     <Compile Include="RoundManager\TestMoveToNextRound.cs" />

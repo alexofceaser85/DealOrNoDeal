@@ -13,7 +13,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldNotAllowNullDollarValuesToPopulate()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -26,7 +26,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldNotAllowNullIndexesOfDollarValuesToPopulate()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
@@ -39,7 +39,7 @@ namespace DealOrNoDeal.Tests.BriefcaseManagerTests
         [TestMethod]
         public void ShouldPopulateBriefcases()
         {
-            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TEN_ROUND_CASES);
+            var briefcaseManager = new BriefcaseManager(CasesToOpenForEachRound.TenRoundCases);
             IList<int> mockRandomIndexes = new List<int> { 2, 0, 1 };
             IList<int> dollarValues = new List<int> { 1, 3, 5 };
             briefcaseManager.PopulateBriefcases(mockRandomIndexes, dollarValues);
