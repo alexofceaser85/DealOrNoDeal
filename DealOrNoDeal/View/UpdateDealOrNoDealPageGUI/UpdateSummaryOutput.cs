@@ -81,7 +81,7 @@ namespace DealOrNoDeal.View.DealOrNoDealPageGUIUtilities
         public void UpdateSummaryTextForFinalBriefcaseSelection(GameManager gameManager, Button selectedBriefcase)
         {
             this.summaryOutput.Text =
-                $"Congrats you win: {FormattedBriefcaseValue.GetFormattedBriefcaseValue(gameManager, (int)selectedBriefcase.Tag)}\n"
+                $"Congrats you win: {FormattedBriefcaseValue.GetFormattedBriefcaseValue(gameManager, int.Parse(selectedBriefcase.Tag.ToString()))}\n"
                 + "\n"
                 + "GAME OVER";
         }

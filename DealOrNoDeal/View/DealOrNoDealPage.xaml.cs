@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows.Input;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using DealOrNoDeal.Data;
 using DealOrNoDeal.Data.Settings;
 using DealOrNoDeal.Model;
 using DealOrNoDeal.View.DealOrNoDealPageGUIUtilities;
+using DealOrNoDeal.View.InitializeDealOrNoDealPageGUI;
 using DealOrNoDeal.View.UserSettings;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -39,13 +43,13 @@ namespace DealOrNoDeal.View
         private const int CasesLeftToEndRound = 0;
         private Boolean isOnFinalSelection = false;
 
-        private readonly GameManager gameManager;
-        private readonly GameSettings gameSettings;
+        private GameManager gameManager;
+        private GameSettings gameSettings;
 
-        private readonly FormattedOffers formattedOffers;
-        private readonly UpdateSummaryOutput updateSummaryOutput;
+        private FormattedOffers formattedOffers;
+        private UpdateSummaryOutput updateSummaryOutput;
 
-        private readonly int FinalRound;
+        private int FinalRound;
         private Button playerSelectedStartingCaseButton;
 
         private IList<Button> briefcaseButtons;
@@ -74,6 +78,15 @@ namespace DealOrNoDeal.View
 
             this.formattedOffers = new FormattedOffers();
             this.updateSummaryOutput = new UpdateSummaryOutput(this.formattedOffers, this.summaryOutput);
+
+            if (this.gameSettings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.Syndicated))
+            {
+                DollarAmountVersions.BuildDollarAmountLabelsForSyndicatedGame(this.dollarAmountLabels, this.gameSettings.DollarValues);
+            } else if (this.gameSettings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.QuickPlay))
+            {
+                DollarAmountVersions.BuildDollarAmountLabelsForQuickPlayGame(this.dollarAmountLabels, this.gameSettings.DollarValues);
+                BriefcaseVersions.BuildBriefcasesForFiveRoundGame(this.briefcaseButtons, this.gameManager);
+            }
 
             this.FinalRound = this.gameSettings.CasesToOpen.Count + 1;
 
@@ -178,7 +191,7 @@ namespace DealOrNoDeal.View
         private void briefcase_Click(object sender, RoutedEventArgs e)
         {
             var briefcaseButton = (Button)sender;
-            var briefcaseId = getBriefcaseId(briefcaseButton);
+            var briefcaseId = this.getBriefcaseId(briefcaseButton);
 
             briefcaseButton.Visibility = Visibility.Collapsed;
 
@@ -220,9 +233,9 @@ namespace DealOrNoDeal.View
             UpdateDollarLabels.FindAndGrayOutGameDollarLabel(this.dollarAmountLabels, removedBriefcaseValue);
         }
 
-        private static int getBriefcaseId(Button selectedBriefCase)
+        private int getBriefcaseId(Button selectedBriefCase)
         {
-            return (int)selectedBriefCase.Tag;
+            return int.Parse(selectedBriefCase.Tag.ToString());
         }
 
         private void updateButtonsForEachRound(Button briefcaseButton)
@@ -237,6 +250,7 @@ namespace DealOrNoDeal.View
                 this.updateSummaryOutput.UpdateSummaryTextForFinalBriefcaseSelection(this.gameManager, briefcaseButton);
                 UpdateBriefcaseButtons.HideBriefcaseButtons(this.briefcaseButtons);
                 this.playerSelectedStartingCaseButton.Visibility = Visibility.Collapsed;
+                this.askUserToPlayAgain();
             }
             else if (this.gameManager.RoundManager.CasesLeftForCurrentRound == CasesLeftToEndRound)
             {
@@ -247,6 +261,19 @@ namespace DealOrNoDeal.View
             {
                 UpdateBriefcaseButtons.EnableBriefcaseButtons(this.briefcaseButtons);
             }
+        }
+
+        private async void askUserToPlayAgain()
+        {
+            ContentDialog userPrompt = new ContentDialog() {
+                Title = "Play Again?",
+                Content = "Would You Like To Play Again?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No",
+
+                PrimaryButtonCommand = new StandardUICommand(StandardUICommandKind.Close),
+                CloseButtonCommand = new StandardUICommand(StandardUICommandKind.Close),
+            };
         }
 
         private void dealButton_Click(object sender, RoutedEventArgs e)
@@ -323,7 +350,7 @@ namespace DealOrNoDeal.View
             Button secondBriefcaseButton)
         {
 
-            if ((int)firstBriefcaseButton.Tag > (int)secondBriefcaseButton.Tag)
+            if (int.Parse(firstBriefcaseButton.Tag.ToString()) > int.Parse(secondBriefcaseButton.Tag.ToString()))
             {
                 panelToAddTo.Children.Add(secondBriefcaseButton);
                 panelToAddTo.Children.Add(firstBriefcaseButton);

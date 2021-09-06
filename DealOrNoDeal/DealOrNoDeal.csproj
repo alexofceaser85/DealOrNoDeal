@@ -146,13 +146,15 @@
       <DependentUpon>DealOrNoDealPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateBriefcaseButtons.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateDealAndNoDealButton.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateDollarLabels.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\FormattedBriefcaseValue.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\FormattedOffers.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateRoundOutput.cs" />
-    <Compile Include="View\DealOrNoDealPageGUIUtilities\UpdateSummaryOutput.cs" />
+    <Compile Include="View\InitializeDealOrNoDealPageGUI\BriefcaseVersions.cs" />
+    <Compile Include="View\InitializeDealOrNoDealPageGUI\DollarAmountVersions.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateBriefcaseButtons.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateDealAndNoDealButton.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateDollarLabels.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\FormattedBriefcaseValue.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\FormattedOffers.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateRoundOutput.cs" />
+    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateSummaryOutput.cs" />
     <Compile Include="View\UserSettings\UsersGameSettings.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,10 +12,10 @@ namespace DealOrNoDeal.View.UserSettings
         /// <summary>
         /// Holds the settings for cases to open
         /// </summary>
-        public static CasesToOpenSettings CasesToOpenSetting { get; } = CasesToOpenSettings.TenRoundGame;
+        public static CasesToOpenSettings CasesToOpenSetting { get; } = CasesToOpenSettings.FiveRoundGame;
         /// <summary>
         /// Holds the settings for the dollar values
         /// </summary>
-        public static DollarValuesForRoundSettings DollarValuesSetting { get; } = DollarValuesForRoundSettings.Regular;
+        public static DollarValuesForRoundSettings DollarValuesSetting { get; } = DollarValuesForRoundSettings.QuickPlay;
     }
 }
