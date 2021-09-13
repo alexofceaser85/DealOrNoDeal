@@ -17,18 +17,18 @@ namespace DealOrNoDeal.Model
         private const int InitialMinimumOffer = int.MaxValue;
         private const int InitialMaximumOffer = int.MinValue;
 
-        private List<int> previousOffers;
+        private readonly List<int> previousOffers;
         private int currentOffer;
         private int averageOffer;
         private int minimumOffer;
         private int maximumOffer;
 
         /// <summary>
-        ///     The current banker offer.
-        ///     Precondition:
-        ///     value >= 0
-        ///     Postcondition:
-        ///     this.currentOffer == value
+        /// The current banker offer.
+        /// Precondition:
+        /// value >= 0
+        /// Postcondition:
+        /// this.currentOffer == value
         /// </summary>
         /// <value>The banker's current offer.</value>
         public int CurrentOffer
@@ -46,6 +46,14 @@ namespace DealOrNoDeal.Model
             }
         }
 
+        /// <summary>
+        /// The average offer the banker offered
+        /// Precondition
+        /// value >= 0
+        /// Postcondition:
+        /// this.averageOffer == value
+        /// </summary>
+        /// <value>The average banker offer</value>
         public int AverageOffer
         {
             get => this.averageOffer;
@@ -61,12 +69,12 @@ namespace DealOrNoDeal.Model
         }
 
         /// <summary>
-        ///     The lowest offer the banker offered throughout the game
-        ///     Precondition:
-        ///     value  >= 0
-        ///     AND value >= this.MinimumOffer OR this.MinimumOffer == InitialMinimumOffer
-        ///     Postcondition:
-        ///     this.minimumOffer == value
+        /// The lowest offer the banker offered throughout the game
+        /// Precondition:
+        /// value  >= 0
+        /// AND value >= this.MinimumOffer OR this.MinimumOffer == InitialMinimumOffer
+        /// Postcondition:
+        /// this.minimumOffer == value
         /// </summary>
         /// <value>The minimum banker offer.</value>
         public int MinimumOffer
@@ -91,12 +99,12 @@ namespace DealOrNoDeal.Model
         }
 
         /// <summary>
-        ///     The highest offer the banker offered throughout the game
-        ///     Precondition:
-        ///     value >= 0
-        ///     AND value >= this.MaximumOffer OR this.MaximumOffer == InitialMaximumOffer
-        ///     Postcondition:
-        ///     this.maximumOffer == value
+        /// The highest offer the banker offered throughout the game
+        /// Precondition:
+        /// value >= 0
+        /// AND value >= this.MaximumOffer OR this.MaximumOffer == InitialMaximumOffer
+        /// Postcondition:
+        /// this.maximumOffer == value
         /// </summary>
         /// <value>The maximum banker offer.</value>
         public int MaximumOffer
@@ -125,10 +133,11 @@ namespace DealOrNoDeal.Model
         ///
         /// Precondition: None
         /// Postcondition:
-        ///     this.previousOffers = new List&lt;int&gt;
-        ///     this.currentOffer == 0
-        ///     this.minimumOffer == int.MaxValue
-        ///     this.maximumOffer == int.MinValue
+        /// this.previousOffers = new List&lt;int&gt;
+        /// AND this.currentOffer == InitialCurrentOffer
+        /// AND this.AverageOffer == InitialAverageOffer
+        /// AND this.minimumOffer == InitialMinimumOffer
+        /// AND this.maximumOffer == InitialMaximumOffer
         /// </summary>
         public Banker()
         {
@@ -142,21 +151,29 @@ namespace DealOrNoDeal.Model
         /// <summary>
         /// Calculates the offer from the banker
         ///
-        /// Precondition: None
+        /// Precondition:
+        /// briefcasesStillInPlay != null
+        /// numberOfCasesToOpenInNextRound > 0
         /// Postcondition:
-        ///     this.CurrentOffer == InitialCurrentOffer;
-        ///     AND this.MinimumOffer == InitialMinimumOffer;
-        ///     AND this.MaximumOffer == InitialMaximumOffer;
+        /// this.CurrentOffer != this.CurrentOffer@prev;
+        /// AND this.MinimumOffer != this.MinimumOffer@prev IF this.MinimumOffer &lt; this.CurrentOffer ELSE this.MinimumOffer == this.MinimumOffer@prev;
+        /// AND this.MaximumOffer != this.MaximumOffer@prev IF this.MaximumOffer &lt; this.CurrentOffer ELSE this.MaximumOffer == this.MaximumOffer@prev;
         /// </summary>
         /// <param name="briefcasesStillInPlay">The briefcases that are still in play</param>
         /// <param name="numberOfCasesToOpenInNextRound">The number of cases that can be opened in the next round</param>
         /// <returns>The amount of money which will be offered by the banker</returns>
-        public int CalculateOffer(IList<Briefcase> briefcasesStillInPlay, int numberOfCasesToOpenInNextRound)
+        public double CalculateOffers(IList<Briefcase> briefcasesStillInPlay, int numberOfCasesToOpenInNextRound)
         {
             if (briefcasesStillInPlay == null)
             {
                 throw new ArgumentException(BankerErrorMessages
                     .CannotCalculateBankerOfferIfBriefcasesStillInPlayAreNull);
+            }
+
+            if (briefcasesStillInPlay.Count <= 0)
+            {
+                throw new ArgumentException(BankerErrorMessages
+                    .CannotCalculateBankerOfferIfBriefcasesStillInPlayAreEmpty);
             }
 
             if (numberOfCasesToOpenInNextRound <= 0)
@@ -165,14 +182,13 @@ namespace DealOrNoDeal.Model
                     .CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
             }
 
-            var unRoundedOffer = calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
-            var roundedOffer = roundOfferToNearestOneHundred(unRoundedOffer);
-            this.previousOffers.Add(roundedOffer);
-            this.updateOffers(roundedOffer);
-            return roundedOffer;
+            var offer = calculateTotalBriefcaseDollarAmounts(briefcasesStillInPlay) / numberOfCasesToOpenInNextRound / briefcasesStillInPlay.Count;
+            this.previousOffers.Add(offer);
+            this.updateOffers(offer);
+            return offer;
         }
 
-        private static double calculateTotalBriefcaseDollarAmounts(IEnumerable<Briefcase> briefcasesStillInPlay)
+        private static int calculateTotalBriefcaseDollarAmounts(IEnumerable<Briefcase> briefcasesStillInPlay)
         {
             var totalBriefcaseDollarAmounts = 0;
 
@@ -182,11 +198,6 @@ namespace DealOrNoDeal.Model
             }
 
             return totalBriefcaseDollarAmounts;
-        }
-
-        private static int roundOfferToNearestOneHundred(double unRoundedBankerOffer)
-        {
-            return (int)Math.Round(unRoundedBankerOffer / 100) * 100;
         }
 
         private void updateOffers(int bankerOffer)
@@ -207,14 +218,9 @@ namespace DealOrNoDeal.Model
 
         private int calculateAverageOffer()
         {
-            int totalOffer = 0;
-
-            foreach (int offer in this.previousOffers)
-            {
-                totalOffer += offer;
-            }
-
-            return totalOffer / this.previousOffers.Count;
+            double totalOffer = 0;
+            this.previousOffers.ForEach(offer => totalOffer += offer);
+            return (int) totalOffer / this.previousOffers.Count;
         }
 
     }

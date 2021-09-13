@@ -30,25 +30,25 @@
     <AppXManifest Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2021-09-05T01:32:42.517</Modified>
+      <Modified>2021-09-13T20:33:30.015</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\DealOrNoDeal.Tests.exe">
       <PackagePath>entrypoint\DealOrNoDeal.Tests.exe</PackagePath>
-      <Modified>2021-09-05T01:32:41.512</Modified>
+      <Modified>2021-09-13T20:33:28.969</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.exe">
       <PackagePath>DealOrNoDeal.exe</PackagePath>
-      <Modified>2021-09-05T01:32:38.499</Modified>
+      <Modified>2021-09-13T20:33:17.493</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\DealOrNoDeal.Tests.pdb">
       <PackagePath>DealOrNoDeal.Tests.pdb</PackagePath>
-      <Modified>2021-09-05T01:32:41.512</Modified>
+      <Modified>2021-09-13T20:33:28.969</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.pdb">
       <PackagePath>DealOrNoDeal.pdb</PackagePath>
-      <Modified>2021-09-05T01:32:38.499</Modified>
+      <Modified>2021-09-13T20:33:17.493</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\TestPlatform.Universal\16.0\References\CommonConfiguration\neutral\testhost.dll">
       <PackagePath>testhost.dll</PackagePath>
@@ -162,23 +162,31 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\DealOrNoDeal.xr.xml">
       <PackagePath>DealOrNoDeal.xr.xml</PackagePath>
-      <Modified>2021-08-21T16:57:33.346</Modified>
+      <Modified>2021-09-10T22:10:10.604</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\UnitTestApp.xbf">
       <PackagePath>UnitTestApp.xbf</PackagePath>
-      <Modified>2021-09-05T01:31:26.471</Modified>
+      <Modified>2021-09-13T20:33:28.760</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2021-09-05T01:31:15.818</Modified>
+      <Modified>2021-09-13T20:33:17.235</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\View\DealOrNoDealPage.xbf">
       <PackagePath>View\DealOrNoDealPage.xbf</PackagePath>
-      <Modified>2021-09-05T01:31:15.818</Modified>
+      <Modified>2021-09-13T20:33:17.234</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\bin\x64\Debug\View\Dialogs\AskUserToPlayAgain.xbf">
+      <PackagePath>View\Dialogs\AskUserToPlayAgain.xbf</PackagePath>
+      <Modified>2021-09-13T20:33:17.236</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\Assets\DealOrNoDealHeader.jpg">
       <PackagePath>Assets\DealOrNoDealHeader.jpg</PackagePath>
       <Modified>2021-08-21T16:57:30.621</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\notes.txt">
+      <PackagePath>notes.txt</PackagePath>
+      <Modified>2021-09-13T20:10:40.560</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
@@ -190,11 +198,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2021-09-05T01:32:41.773</Modified>
+      <Modified>2021-09-13T19:58:23.298</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alexd\Desktop\DealOrNoDealByAlexDeCesare\DealOrNoDeal.Tests\bin\x64\Debug\Core\DealOrNoDeal.Tests.exe">
       <PackagePath>DealOrNoDeal.Tests.exe</PackagePath>
-      <Modified>2021-09-05T01:32:42.508</Modified>
+      <Modified>2021-09-13T20:33:30.005</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

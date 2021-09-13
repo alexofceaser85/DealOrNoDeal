@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DealOrNoDeal.ErrorMessages
+﻿namespace DealOrNoDeal.ErrorMessages
 {
     /// <summary>
     /// Holds the error messages for the banker
@@ -24,6 +18,12 @@ namespace DealOrNoDeal.ErrorMessages
         /// </summary>
         public static string CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero =
             "Cannot calculate the banker offer if the briefcases still in play are less than or equal to zero";
+
+        /// <summary>
+        /// The error message that tells the user that the banker should not calculate the banker offer if the briefcases still in play are empty
+        /// </summary>
+        public static string CannotCalculateBankerOfferIfBriefcasesStillInPlayAreEmpty =
+            "Cannot calculate the banker offer if the briefcases still in play are empty";
 
         /// <summary>
         /// The error message that tells the user that they should not set the banker current offer to less than zero

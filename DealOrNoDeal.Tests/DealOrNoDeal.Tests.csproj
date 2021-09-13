@@ -126,7 +126,6 @@
     <Compile Include="BriefcaseManagerTests\TestRemoveBriefcase.cs" />
     <Compile Include="BriefcaseTests\TestBriefcaseConstructor.cs" />
     <Compile Include="GameManagerTests\TestGameManagerConstructor.cs" />
-    <Compile Include="GameManagerTests\TestGetBriefcaseValue.cs" />
     <Compile Include="BriefcaseManagerTests\TestPopulateBriefcases.cs" />
     <Compile Include="GameManagerTests\TestMoveToNextRound.cs" />
     <Compile Include="GameManagerTests\TestRemoveBriefcaseFromPlay.cs" />

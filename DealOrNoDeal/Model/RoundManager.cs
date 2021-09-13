@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
 {
     /// <summary>
-    ///     Handles the management of the game rounds
-    ///     Author: Alex DeCesare
-    ///     Version: 03-September-2021
+    /// Handles the management of the game rounds
+    /// Author: Alex DeCesare
+    /// Version: 03-September-2021
     /// </summary>
     public class RoundManager
     {
         private const int InitialCurrentRound = 1;
 
-        private int indexOfAvailableCasesForNextRound = 1;
-
+        private int indexOfAvailableCasesForNextRound;
         private int currentRound;
         private int casesLeftForCurrentRound;
+
+        /// <summary>
+        /// The final round for the game
+        ///
+        /// Precondition: None
+        /// Postcondition: None
+        /// </summary>
+        private int FinalRound { get; }
 
         /// <summary>
         /// The cases for the next round of the game
@@ -42,7 +46,7 @@ namespace DealOrNoDeal.Model
         /// Precondition: None
         /// Postcondition: None
         /// </summary>
-        public IList<int> CasesAvailableForEachRound { get; }
+        public IList<int> CasesAvailableForEachRound { get; set; }
 
         /// <summary>
         ///     The current round that the game is on
@@ -93,20 +97,16 @@ namespace DealOrNoDeal.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="RoundManager" /> class.
         ///
-        /// Precondition: None
+        /// Precondition:
+        /// casesAvailableForEachRound != null
+        /// casesAvailableForEachRound.Count != 0
         /// Postcondition:
-        ///     this.CasesAvailableForEachRound == casesAvailableForEachRound
-        ///     this.CasesAvailableForNextRound == this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound]
-        ///     AND this.CurrentRound == InitialCurrentRound
-        ///     AND this.CasesAvailableForCurrentRound == this.CasesAvailableForEachRound[0]
-        ///     AND this.CasesLeftForCurrentRound == this.CasesAvailableForEachRound[0]
-        ///
-        ///     OR IF ArgumentOutOfRangeException THEN
-        ///     this.CasesAvailableForNextRound = 0;
-        ///     this.CurrentRound = InitialCurrentRound;
-        ///     this.CasesAvailableForCurrentRound = 0;
-        ///     this.CasesLeftForCurrentRound = 0;
-        ///     
+        /// this.CasesAvailableForEachRound == casesAvailableForEachRound
+        /// AND this.CasesAvailableForNextRound == this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound]
+        /// AND this.CurrentRound == InitialCurrentRound
+        /// AND this.CasesAvailableForCurrentRound == this.CasesAvailableForEachRound[0]
+        /// AND this.CasesLeftForCurrentRound == this.CasesAvailableForEachRound[0]
+        /// AND this.FinalRound = casesAvailableForEachRound.Count + 1
         /// </summary>
         /// <param name="casesAvailableForEachRound">The cases available for each round of the game</param>
         public RoundManager(IList<int> casesAvailableForEachRound)
@@ -116,21 +116,18 @@ namespace DealOrNoDeal.Model
                 throw new ArgumentException(RoundManagerErrorMessages.ShouldNotAllowNullCasesAvailableForEachRound);
             }
 
-            try
+            if (casesAvailableForEachRound.Count <= 1)
             {
-                this.CasesAvailableForEachRound = casesAvailableForEachRound;
-                this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
-                this.CurrentRound = InitialCurrentRound;
-                this.CasesAvailableForCurrentRound = this.CasesAvailableForEachRound[0];
-                this.CasesLeftForCurrentRound = this.CasesAvailableForEachRound[0];
+                throw new ArgumentException(RoundManagerErrorMessages.ShouldNotAllowEmptyCasesAvailableForEachRound);
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                this.CasesAvailableForNextRound = 0;
-                this.CurrentRound = InitialCurrentRound;
-                this.CasesAvailableForCurrentRound = 0;
-                this.CasesLeftForCurrentRound = 0;
-            }
+
+            this.indexOfAvailableCasesForNextRound = 1;
+            this.CasesAvailableForEachRound = casesAvailableForEachRound;
+            this.CasesAvailableForNextRound = this.CasesAvailableForEachRound[this.indexOfAvailableCasesForNextRound];
+            this.CurrentRound = InitialCurrentRound;
+            this.CasesAvailableForCurrentRound = this.CasesAvailableForEachRound[0];
+            this.CasesLeftForCurrentRound = this.CasesAvailableForEachRound[0];
+            this.FinalRound = casesAvailableForEachRound.Count + 1;
         }
 
         /// <summary>
@@ -174,7 +171,7 @@ namespace DealOrNoDeal.Model
         /// Decrements the current round by one
         ///
         /// Precondition: None
-        /// Postcondition: this.currentRound@prev == this.currentRound - 1
+        /// Postcondition: this.currentRound == this.currentRound@prev - 1
         /// </summary>
         /// <return>Zero if the current round is one or less and current one minus one otherwise</return>
         public void DecrementCasesLeftForCurrentRound()
@@ -183,6 +180,18 @@ namespace DealOrNoDeal.Model
             {
                 this.CasesLeftForCurrentRound--;
             }
+        }
+
+        /// <summary>
+        /// Determines if the game is on the final round
+        ///
+        /// Precondition: None
+        /// Postcondition: None
+        /// </summary>
+        /// <returns>True if the game is on the final round, false otherwise</returns>
+        public bool IsOnFinalRound()
+        {
+            return this.CurrentRound == this.FinalRound;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using DealOrNoDeal.ErrorMessages;
 using DealOrNoDeal.Model;
@@ -13,10 +12,10 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferForNullList()
         {
-            Banker banker = new Banker();
+            var banker = new Banker();
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                banker.CalculateOffer(null, 10);
+                banker.CalculateOffers(null, 10);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfBriefcasesStillInPlayAreNull);
@@ -25,19 +24,25 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferForEmptyList()
         {
-            Banker banker = new Banker();
+            var banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
-            Assert.AreEqual(0, banker.CalculateOffer(briefcases, 10));
+            var message = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                banker.CalculateOffers(briefcases, 0);
+            }).Message;
+
+            Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfBriefcasesStillInPlayAreEmpty);
         }
 
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsZero()
         {
-            Banker banker = new Banker();
+            var banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
+            briefcases.Add(new Briefcase(1, 100));
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                banker.CalculateOffer(briefcases, 0);
+                banker.CalculateOffers(briefcases, 0);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -46,11 +51,12 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsOneLessThanZero()
         {
-            Banker banker = new Banker();
+            var banker = new Banker();
             IList<Briefcase> briefcases = new List<Briefcase>();
+            briefcases.Add(new Briefcase(1, 100));
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                banker.CalculateOffer(briefcases, -1);
+                banker.CalculateOffers(briefcases, -1);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -59,11 +65,11 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldNotCalculateOfferIfNumberOfCasesForNextRoundIsWellLessThanZero()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = new List<Briefcase>();
+            var banker = new Banker();
+            var briefcases = new List<Briefcase> { new Briefcase(1, 100) };
             var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                banker.CalculateOffer(briefcases, -100);
+                banker.CalculateOffers(briefcases, -100);
             }).Message;
 
             Assert.AreEqual(message, BankerErrorMessages.CannotCalculateBankerOfferIfNumberOfCasesToOpenIsLessThanOrEqualToZero);
@@ -72,27 +78,29 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldCalculateOfferForListOfOneItemAndOneNumberOfCaseToOpenInNextRound()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = new List<Briefcase>();
-            briefcases.Add(new Briefcase(0, 100));
+            var banker = new Banker();
+            var briefcases = new List<Briefcase>
+            {
+                new Briefcase(0, 100)
+            };
 
-            Assert.AreEqual(100, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(100, banker.CalculateOffers(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForStartOfFirstRound()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+            var banker = new Banker();
+            var briefcases = returnFullyPopulatedBriefcases();
 
-            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(131477, banker.CalculateOffers(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForEndOfFirstRound()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+            var banker = new Banker();
+            var briefcases = returnFullyPopulatedBriefcases();
             briefcases.RemoveAt(2);
             briefcases.RemoveAt(5);
             briefcases.RemoveAt(10);
@@ -100,60 +108,64 @@ namespace DealOrNoDeal.Tests.BankerTests
             briefcases.RemoveAt(19);
             briefcases.RemoveAt(20);
 
-            Assert.AreEqual(18900, banker.CalculateOffer(briefcases, 5));
+            Assert.AreEqual(18925, banker.CalculateOffers(briefcases, 5));
         }
 
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForEndOfFifthRound()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = this.returnBriefcasesBasedOnDataForFifthRound();
+            var banker = new Banker();
+            var briefcases = returnBriefcasesBasedOnDataForFifthRound();
 
-            Assert.AreEqual(12800, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(12766, banker.CalculateOffers(briefcases, 1));
         }
 
-        private IList<Briefcase> returnBriefcasesBasedOnDataForFifthRound()
+        private static IList<Briefcase> returnBriefcasesBasedOnDataForFifthRound()
         {
-            IList<Briefcase> briefcases = new List<Briefcase>();
-            briefcases.Add(new Briefcase(0, 0));
-            briefcases.Add(new Briefcase(1, 100));
-            briefcases.Add(new Briefcase(2, 500));
-            briefcases.Add(new Briefcase(3, 1000));
-            briefcases.Add(new Briefcase(4, 25000));
-            briefcases.Add(new Briefcase(5, 50000));
+            var briefcases = new List<Briefcase>
+            {
+                new Briefcase(0, 0),
+                new Briefcase(1, 100),
+                new Briefcase(2, 500),
+                new Briefcase(3, 1000),
+                new Briefcase(4, 25000),
+                new Briefcase(5, 50000)
+            };
 
             return briefcases;
         }
 
-        private IList<Briefcase> returnFullyPopulatedBriefcases()
+        private static IList<Briefcase> returnFullyPopulatedBriefcases()
         {
-            IList<Briefcase> briefcases = new List<Briefcase>();
-            briefcases.Add(new Briefcase(0, 0));
-            briefcases.Add(new Briefcase(1, 1));
-            briefcases.Add(new Briefcase(2, 5));
-            briefcases.Add(new Briefcase(3, 10));
-            briefcases.Add(new Briefcase(4, 25));
-            briefcases.Add(new Briefcase(5, 50));
-            briefcases.Add(new Briefcase(6, 75));
-            briefcases.Add(new Briefcase(7, 100));
-            briefcases.Add(new Briefcase(8, 200));
-            briefcases.Add(new Briefcase(9, 300));
-            briefcases.Add(new Briefcase(10, 400));
-            briefcases.Add(new Briefcase(11, 500));
-            briefcases.Add(new Briefcase(12, 750));
-            briefcases.Add(new Briefcase(13, 1000));
-            briefcases.Add(new Briefcase(14, 5000));
-            briefcases.Add(new Briefcase(15, 10000));
-            briefcases.Add(new Briefcase(16, 25000));
-            briefcases.Add(new Briefcase(17, 50000));
-            briefcases.Add(new Briefcase(18, 75000));
-            briefcases.Add(new Briefcase(19, 100000));
-            briefcases.Add(new Briefcase(20, 200000));
-            briefcases.Add(new Briefcase(21, 300000));
-            briefcases.Add(new Briefcase(22, 400000));
-            briefcases.Add(new Briefcase(23, 500000));
-            briefcases.Add(new Briefcase(24, 750000));
-            briefcases.Add(new Briefcase(25, 1000000));
+            var briefcases = new List<Briefcase>
+            {
+                new Briefcase(0, 0),
+                new Briefcase(1, 1),
+                new Briefcase(2, 5),
+                new Briefcase(3, 10),
+                new Briefcase(4, 25),
+                new Briefcase(5, 50),
+                new Briefcase(6, 75),
+                new Briefcase(7, 100),
+                new Briefcase(8, 200),
+                new Briefcase(9, 300),
+                new Briefcase(10, 400),
+                new Briefcase(11, 500),
+                new Briefcase(12, 750),
+                new Briefcase(13, 1000),
+                new Briefcase(14, 5000),
+                new Briefcase(15, 10000),
+                new Briefcase(16, 25000),
+                new Briefcase(17, 50000),
+                new Briefcase(18, 75000),
+                new Briefcase(19, 100000),
+                new Briefcase(20, 200000),
+                new Briefcase(21, 300000),
+                new Briefcase(22, 400000),
+                new Briefcase(23, 500000),
+                new Briefcase(24, 750000),
+                new Briefcase(25, 1000000)
+            };
 
             return briefcases;
         }
@@ -161,50 +173,54 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldCalculateOfferBasedOnDataForFinalRound()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = new List<Briefcase>();
-            briefcases.Add(new Briefcase(0, 1000));
-            briefcases.Add(new Briefcase(1, 10000));
+            var banker = new Banker();
+            var briefcases = new List<Briefcase>
+            {
+                new Briefcase(0, 1000),
+                new Briefcase(1, 10000)
+            };
 
-            Assert.AreEqual(5500, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(5500, banker.CalculateOffers(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldCalculateIfOnlyBriefcaseHasAValueOfZero()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = new List<Briefcase>();
-            briefcases.Add(new Briefcase(0, 0));
+            var banker = new Banker();
+            var briefcases = new List<Briefcase>
+            {
+                new Briefcase(0, 0)
+            };
 
-            Assert.AreEqual(0, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(0, banker.CalculateOffers(briefcases, 1));
         }
 
         [TestMethod]
         public void ShouldUpdateMaximumAndMinimumAndAverageOffersForOneData()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+            var banker = new Banker();
+            var briefcases = returnFullyPopulatedBriefcases();
 
-            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
+            Assert.AreEqual(131477, banker.CalculateOffers(briefcases, 1));
 
-            Assert.AreEqual(131500, banker.MaximumOffer);
-            Assert.AreEqual(131500, banker.MinimumOffer);
-            Assert.AreEqual(131500, banker.AverageOffer);
+            Assert.AreEqual(131477, banker.MaximumOffer);
+            Assert.AreEqual(131477, banker.MinimumOffer);
+            Assert.AreEqual(131477, banker.AverageOffer);
         }
 
         [TestMethod]
         public void ShouldUpdateMaximumAndMinimumAndAverageOffersForManyData()
         {
-            Banker banker = new Banker();
-            IList<Briefcase> briefcases = this.returnFullyPopulatedBriefcases();
+            var banker = new Banker();
+            var briefcases = returnFullyPopulatedBriefcases();
 
-            Assert.AreEqual(131500, banker.CalculateOffer(briefcases, 1));
-            Assert.AreEqual(21900, banker.CalculateOffer(briefcases, 6));
-            Assert.AreEqual(11000, banker.CalculateOffer(briefcases, 12));
+            Assert.AreEqual(131477, banker.CalculateOffers(briefcases, 1));
+            Assert.AreEqual(21912, banker.CalculateOffers(briefcases, 6));
+            Assert.AreEqual(10956, banker.CalculateOffers(briefcases, 12));
 
-            Assert.AreEqual(131500, banker.MaximumOffer);
-            Assert.AreEqual(11000, banker.MinimumOffer);
-            Assert.AreEqual(54800, banker.AverageOffer);
+            Assert.AreEqual(131477, banker.MaximumOffer);
+            Assert.AreEqual(10956, banker.MinimumOffer);
+            Assert.AreEqual(54781, banker.AverageOffer);
         }
     }
 }

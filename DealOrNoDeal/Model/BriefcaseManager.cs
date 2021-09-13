@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
 {
     /// <summary>
-    /// Handles the management of the briefcases
-    ///
-    /// Author: Alex DeCesare
-    /// Version: 04-September-2021
+    ///     Handles the management of the briefcases
+    ///     Author: Alex DeCesare
+    ///     Version: 04-September-2021
     /// </summary>
     public class BriefcaseManager
     {
+        #region Properties
+
         /// <summary>
-        /// The amount of briefcases in the game
-        ///
-        /// Precondition: None
-        /// Postcondition: None
+        ///     The amount of briefcases in the game
+        ///     Precondition: None
+        ///     Postcondition: None
         /// </summary>
         public IList<Briefcase> Briefcases { get; private set; }
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="BriefcaseManager" /> class.
-        ///
-        /// Precondition: briefcaseValues != null
-        /// Postcondiiton: this.Briefcases.Count > 0
+        ///     Initializes a new instance of the <see cref="BriefcaseManager" /> class.
+        ///     Precondition: briefcaseValues != null
+        ///     Postcondition: this.Briefcases.Count > 0
         /// </summary>
         /// <param name="briefCaseDollarAmounts">The dollar amounts that each briefcase can contain</param>
         public BriefcaseManager(IList<int> briefCaseDollarAmounts)
@@ -39,13 +40,17 @@ namespace DealOrNoDeal.Model
             }
 
             var numberOfDollarAmounts = briefCaseDollarAmounts.Count;
-            var randomBriefcaseDollarAmountIndexes = this.createPopulatedIndexes(numberOfDollarAmounts, 0,
+            var randomBriefcaseDollarAmountIndexes = createPopulatedIndexes(numberOfDollarAmounts, 0,
                 numberOfDollarAmounts);
 
             this.PopulateBriefcases(randomBriefcaseDollarAmountIndexes, briefCaseDollarAmounts);
         }
 
-        private IList<int> createPopulatedIndexes(int numberOfIndexesToGenerate,
+        #endregion
+
+        #region Methods
+
+        private static IList<int> createPopulatedIndexes(int numberOfIndexesToGenerate,
             int minimumValueToGenerate, int maximumValueToGenerate)
         {
             var randomNumberGenerator = new Random();
@@ -54,7 +59,8 @@ namespace DealOrNoDeal.Model
 
             for (var counter = 0; counter < numberOfIndexesToGenerate; counter++)
             {
-                var currentIndex = this.findCurrentUnusedRandomIndex(minimumValueToGenerate, maximumValueToGenerate, randomNumberGenerator, previousIndexes);
+                var currentIndex = findCurrentUnusedRandomIndex(minimumValueToGenerate, maximumValueToGenerate,
+                    randomNumberGenerator, previousIndexes);
 
                 randomIndexes.Add(currentIndex);
                 previousIndexes.Add(currentIndex);
@@ -63,8 +69,8 @@ namespace DealOrNoDeal.Model
             return randomIndexes;
         }
 
-        private int findCurrentUnusedRandomIndex(int minimumValueToGenerate, int maximumValueToGenerate,
-            Random randomNumberGenerator, IList<int> previousIndexes)
+        private static int findCurrentUnusedRandomIndex(int minimumValueToGenerate, int maximumValueToGenerate,
+            Random randomNumberGenerator, ICollection<int> previousIndexes)
         {
             int currentIndex;
             do
@@ -81,7 +87,7 @@ namespace DealOrNoDeal.Model
         ///     indexesOfDollarValuesToPopulate != null
         ///     AND dollarValuesToPopulate != null
         ///     Postcondition:
-        ///     this.Briefcases == thePopulatedBriefcases
+        ///     this.Briefcases == populatedBriefcases
         /// </summary>
         /// <param name="indexesOfDollarValuesToPopulate">
         ///     The index of the array element which is used to get a value from the
@@ -160,5 +166,6 @@ namespace DealOrNoDeal.Model
             return briefcaseToRemove.DollarAmount;
         }
 
+        #endregion
     }
 }

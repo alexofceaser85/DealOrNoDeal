@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DealOrNoDeal.ErrorMessages
+﻿namespace DealOrNoDeal.ErrorMessages
 {
     /// <summary>
     /// Holds the error messages for the briefcase manager
@@ -14,6 +8,9 @@ namespace DealOrNoDeal.ErrorMessages
     /// </summary>
     public class BriefcaseManagerErrorMessages
     {
+        /// <summary>
+        /// The error message that tells the user that they should not create a new briefcase manager if the briefcase dollar amounts are null
+        /// </summary>
         public const string ShouldNotCreateNeWBriefcaseManagerIfTheBriefcaseDollarAmountsAreNull =
             "Cannot create a new briefcase manager is the briefcase dollar amounts are null";
         /// <summary>

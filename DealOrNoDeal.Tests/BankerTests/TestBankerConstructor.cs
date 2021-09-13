@@ -1,6 +1,4 @@
-﻿using System;
-using DealOrNoDeal.ErrorMessages;
-using DealOrNoDeal.Model;
+﻿using DealOrNoDeal.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DealOrNoDeal.Tests.BankerTests
@@ -11,7 +9,7 @@ namespace DealOrNoDeal.Tests.BankerTests
         [TestMethod]
         public void ShouldInitializeDefaultValues()
         {
-            Banker banker = new Banker();
+            var banker = new Banker();
             Assert.AreEqual(0, banker.CurrentOffer);
             Assert.AreEqual(0, banker.AverageOffer);
             Assert.AreEqual(int.MaxValue, banker.MinimumOffer);

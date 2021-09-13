@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DealOrNoDeal.Data;
-using DealOrNoDeal.Data.Settings;
+﻿using DealOrNoDeal.Data.Rounds;
+using DealOrNoDeal.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DealOrNoDeal.Tests.GameSettings
@@ -15,66 +10,47 @@ namespace DealOrNoDeal.Tests.GameSettings
         [TestMethod]
         public void ShouldSetGameSettingsForTenRoundNotSyndicatedGame()
         {
-            Model.GameSettings settings = new Model.GameSettings(CasesToOpenSettings.TenRoundGame,
-                DollarValuesForRoundSettings.Regular);
+            var settings = new GameSettingsManager();
 
-            Assert.IsTrue(settings.GameSettingForCasesToOpen.Equals(CasesToOpenSettings.TenRoundGame));
-            Assert.IsTrue(settings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.Regular));
-
-            Assert.IsTrue(settings.CasesToOpen.Equals(CasesToOpenForEachRound.TenRoundCases));
-            Assert.IsTrue(settings.DollarValues.Equals(DollarValuesForEachRound.Regular));
+            Assert.AreEqual(CasesToOpenForEachRound.TenRoundCases.ToString(), settings.CasesToOpen.ToString());
+            Assert.AreEqual(DollarValuesForEachRound.Regular.ToString(), settings.DollarValues.ToString());
         }
 
         [TestMethod]
         public void ShouldSetGameSettingsForTenRoundSyndicatedGame()
         {
-            Model.GameSettings settings = new Model.GameSettings(CasesToOpenSettings.TenRoundGame,
-                DollarValuesForRoundSettings.Syndicated);
+            var settings = new GameSettingsManager();
 
-            Assert.IsTrue(settings.GameSettingForCasesToOpen.Equals(CasesToOpenSettings.TenRoundGame));
-            Assert.IsTrue(settings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.Syndicated));
-
-            Assert.IsTrue(settings.CasesToOpen.Equals(CasesToOpenForEachRound.TenRoundCases));
-            Assert.IsTrue(settings.DollarValues.Equals(DollarValuesForEachRound.Syndicated));
+            Assert.AreEqual(CasesToOpenForEachRound.TenRoundCases.ToString(), settings.CasesToOpen.ToString());
+            Assert.AreEqual(DollarValuesForEachRound.Syndicated.ToString(), settings.DollarValues.ToString());
         }
 
         [TestMethod]
         public void ShouldSetGameSettingsForSevenRoundNotSyndicatedGame()
         {
-            Model.GameSettings settings = new Model.GameSettings(CasesToOpenSettings.SevenRoundGame,
-                DollarValuesForRoundSettings.Regular);
+            var settings = new GameSettingsManager();
 
-            Assert.IsTrue(settings.GameSettingForCasesToOpen.Equals(CasesToOpenSettings.SevenRoundGame));
-            Assert.IsTrue(settings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.Regular));
-
-            Assert.IsTrue(settings.CasesToOpen.Equals(CasesToOpenForEachRound.SevenRoundGame));
-            Assert.IsTrue(settings.DollarValues.Equals(DollarValuesForEachRound.Regular));
+            Assert.AreEqual(CasesToOpenForEachRound.SevenRoundGame.ToString(), settings.CasesToOpen.ToString());
+            Assert.AreEqual(DollarValuesForEachRound.Regular.ToString(), settings.DollarValues.ToString());
         }
 
         [TestMethod]
         public void ShouldSetGameSettingsForSevenRoundSyndicatedGame()
         {
-            Model.GameSettings settings = new Model.GameSettings(CasesToOpenSettings.SevenRoundGame,
-                DollarValuesForRoundSettings.Syndicated);
+            var settings = new GameSettingsManager();
 
-            Assert.IsTrue(settings.GameSettingForCasesToOpen.Equals(CasesToOpenSettings.SevenRoundGame));
-            Assert.IsTrue(settings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.Syndicated));
-
-            Assert.IsTrue(settings.CasesToOpen.Equals(CasesToOpenForEachRound.SevenRoundGame));
-            Assert.IsTrue(settings.DollarValues.Equals(DollarValuesForEachRound.Syndicated));
+            Assert.AreEqual(CasesToOpenForEachRound.SevenRoundGame.ToString(), settings.CasesToOpen.ToString());
+            Assert.AreEqual(DollarValuesForEachRound.Syndicated.ToString(), settings.DollarValues.ToString());
         }
 
         [TestMethod]
         public void ShouldSetGameSettingsForQuickPlay()
         {
-            Model.GameSettings settings = new Model.GameSettings(CasesToOpenSettings.FiveRoundGame,
-                DollarValuesForRoundSettings.QuickPlay);
 
-            Assert.IsTrue(settings.GameSettingForCasesToOpen.Equals(CasesToOpenSettings.FiveRoundGame));
-            Assert.IsTrue(settings.GameSettingForDollarValues.Equals(DollarValuesForRoundSettings.QuickPlay));
+            var settings = new GameSettingsManager();
 
-            Assert.IsTrue(settings.CasesToOpen.Equals(CasesToOpenForEachRound.FiveRoundGame));
-            Assert.IsTrue(settings.DollarValues.Equals(DollarValuesForEachRound.QuickPlay));
+            Assert.AreEqual(CasesToOpenForEachRound.FiveRoundGame.ToString(), settings.CasesToOpen.ToString());
+            Assert.AreEqual(DollarValuesForEachRound.QuickPlay.ToString(), settings.DollarValues.ToString());
         }
     }
 }

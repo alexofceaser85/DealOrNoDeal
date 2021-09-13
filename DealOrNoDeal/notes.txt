@@ -1,0 +1,15 @@
+﻿No missing functionality or bugs
+
+
+To change the game type and number of rounds:
+
+1. Navigate to DealOrNoDeal/Data/Settings/UsersGameSettings.cs to change the game type and number of rounds
+
+2a. To change the game type set the DollarValueSettings variable to one of the available values
+
+2b. To change the number of rounds change the CasesToOpenSettings variable to one of the available values
+
+Please Note the Following:
+
+The SevenRoundGame and TenRoundGame values for the CasesToOpenSettings variable only work with the Regular and Syndicated values for the DollarValueSettings variable
+The FiveRoundGame value for the CasesToOpenSettings only work with the QuickPlay value for the DollarValueSettings variable

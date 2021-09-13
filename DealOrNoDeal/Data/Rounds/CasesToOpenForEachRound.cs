@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace DealOrNoDeal.Data
+namespace DealOrNoDeal.Data.Rounds
 {
     /// <summary>
     /// Holds the cases to open for each round
@@ -17,14 +13,14 @@ namespace DealOrNoDeal.Data
         /// <summary>
         /// Holds the cases to open for a five round game
         /// </summary>
-        public static List<int> FiveRoundGame = new List<int>() { 6, 5, 3, 2 };
+        public static List<int> FiveRoundGame = new List<int> { 6, 5, 3, 2 };
         /// <summary>
         /// Holds the cases to open for a seven round game
         /// </summary>
-        public static List<int> SevenRoundGame = new List<int>() { 8, 6, 4, 3, 2, 1 };
+        public static List<int> SevenRoundGame = new List<int> { 8, 6, 4, 3, 2, 1 };
         /// <summary>
         /// Holds the cases to open for a ten round game
         /// </summary>
-        public static List<int> TenRoundCases = new List<int>() {6, 5, 4, 3, 2, 1, 1, 1, 1};
+        public static List<int> TenRoundCases = new List<int> {6, 5, 4, 3, 2, 1, 1, 1, 1};
     }
 }

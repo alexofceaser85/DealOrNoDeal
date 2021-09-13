@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DealOrNoDeal.Data;
+using DealOrNoDeal.Data.Rounds;
 using DealOrNoDeal.ErrorMessages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,9 +12,9 @@ namespace DealOrNoDeal.Tests.RoundManager
         [TestMethod]
         public void ShouldNotAllowNullCasesForEachRound()
         {
-            string message = Assert.ThrowsException<ArgumentException>(() =>
+            var message = Assert.ThrowsException<ArgumentException>(() =>
             {
-                new Model.RoundManager(null);
+                _ = new Model.RoundManager(null);
             }).Message;
 
             Assert.AreEqual(RoundManagerErrorMessages.ShouldNotAllowNullCasesAvailableForEachRound, message);
@@ -23,12 +23,23 @@ namespace DealOrNoDeal.Tests.RoundManager
         [TestMethod]
         public void ShouldHandleEmptyList()
         {
-            var roundManager = new Model.RoundManager(new List<int>());
+            var message = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                _ = new Model.RoundManager(new List<int>());
+            }).Message;
 
-            Assert.AreEqual(0, roundManager.CasesAvailableForNextRound);
-            Assert.AreEqual(1, roundManager.CurrentRound);
-            Assert.AreEqual(0, roundManager.CasesAvailableForCurrentRound);
-            Assert.AreEqual(0, roundManager.CasesLeftForCurrentRound);
+            Assert.AreEqual(RoundManagerErrorMessages.ShouldNotAllowEmptyCasesAvailableForEachRound, message);
+        }
+
+        [TestMethod]
+        public void ShouldHandleListOfOneItem()
+        {
+            var message = Assert.ThrowsException<ArgumentException>(() =>
+            {
+                _ = new Model.RoundManager(new List<int>(1));
+            }).Message;
+
+            Assert.AreEqual(RoundManagerErrorMessages.ShouldNotAllowEmptyCasesAvailableForEachRound, message);
         }
 
         [TestMethod]

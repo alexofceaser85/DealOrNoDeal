@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DealOrNoDeal.ErrorMessages
+﻿namespace DealOrNoDeal.ErrorMessages
 {
     /// <summary>
     ///     Holds the error messages for the round manager
@@ -26,9 +20,16 @@ namespace DealOrNoDeal.ErrorMessages
             "Cannot set the cases left for the current round to a value less than zero";
 
         /// <summary>
-        /// The error message that tells the user that they should allow a null cases available for each round
+        /// The error message that tells the user that they should not have a null cases available for each round
         /// </summary>
         public const string ShouldNotAllowNullCasesAvailableForEachRound =
             "Cannot allow a round manager with null cases available for each round";
+
+        /// <summary>
+        /// The error messages that tells the user that they should not have an empty cases available for each round
+        /// </summary>
+        public const string ShouldNotAllowEmptyCasesAvailableForEachRound =
+            "Cannot allow a round manager with an empty cases available for each round";
+
     }
 }

@@ -107,6 +107,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <DocumentationFile>bin\x64\Debug\DealOrNoDeal.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -129,8 +130,8 @@
     </Compile>
     <Compile Include="Data\Rounds\CasesToOpenForEachRound.cs" />
     <Compile Include="Data\Rounds\DollarValuesForEachRound.cs" />
-    <Compile Include="Data\Settings\CasesToOpenSettings.cs" />
-    <Compile Include="Data\Settings\DollarValuesForRoundSettings.cs" />
+    <Compile Include="Data\SettingVariables\CasesToOpenSettings.cs" />
+    <Compile Include="Data\SettingVariables\DollarValueSettings.cs" />
     <Compile Include="ErrorMessages\BankerErrorMessages.cs" />
     <Compile Include="ErrorMessages\BriefcaseErrorMessages.cs" />
     <Compile Include="ErrorMessages\BriefcaseManagerErrorMessages.cs" />
@@ -140,22 +141,25 @@
     <Compile Include="Model\Briefcase.cs" />
     <Compile Include="Model\BriefcaseManager.cs" />
     <Compile Include="Model\GameManager.cs" />
-    <Compile Include="Model\GameSettings.cs" />
+    <Compile Include="Model\GameSettingsManager.cs" />
     <Compile Include="Model\RoundManager.cs" />
     <Compile Include="View\DealOrNoDealPage.xaml.cs">
       <DependentUpon>DealOrNoDealPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\InitializeDealOrNoDealPageGUI\BriefcaseVersions.cs" />
-    <Compile Include="View\InitializeDealOrNoDealPageGUI\DollarAmountVersions.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateBriefcaseButtons.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateDealAndNoDealButton.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateDollarLabels.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\FormattedBriefcaseValue.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\FormattedOffers.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateRoundOutput.cs" />
-    <Compile Include="View\UpdateDealOrNoDealPageGUI\UpdateSummaryOutput.cs" />
-    <Compile Include="View\UserSettings\UsersGameSettings.cs" />
+    <Compile Include="View\Dialogs\AskUserToPlayAgain.xaml.cs">
+      <DependentUpon>AskUserToPlayAgain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InitializeGUIVersions\BriefcaseVersions.cs" />
+    <Compile Include="View\InitializeGUIVersions\DollarAmountVersions.cs" />
+    <Compile Include="View\UpdateGUI\UpdateBriefcaseButtons.cs" />
+    <Compile Include="View\UpdateGUI\UpdateDealAndNoDealButton.cs" />
+    <Compile Include="View\UpdateGUI\UpdateDollarLabels.cs" />
+    <Compile Include="View\FormattedValues\FormattedBriefcaseValue.cs" />
+    <Compile Include="View\FormattedValues\FormattedOffers.cs" />
+    <Compile Include="View\UpdateGUI\UpdateRoundOutput.cs" />
+    <Compile Include="View\UpdateGUI\UpdateSummaryOutput.cs" />
+    <Compile Include="Data\UsersGameSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -164,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\DealOrNoDealHeader.jpg" />
+    <Content Include="notes.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -181,6 +186,10 @@
     <Page Include="View\DealOrNoDealPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Dialogs\AskUserToPlayAgain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

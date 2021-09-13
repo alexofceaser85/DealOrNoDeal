@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DealOrNoDeal.Model;
+﻿using DealOrNoDeal.Model;
 
-namespace DealOrNoDeal.View.DealOrNoDealPageGUIUtilities
+namespace DealOrNoDeal.View.FormattedValues
 {
     /// <summary>
     /// Formats the briefcase value
@@ -20,7 +15,7 @@ namespace DealOrNoDeal.View.DealOrNoDealPageGUIUtilities
         /// </summary>
         /// <param name="gameManager">The manager where the briefcase index exists</param>
         /// <param name="idToGet">The Id of the briefcase value to formatted</param>
-        /// <returns></returns>
+        /// <returns>The formatted briefcase value</returns>
         public static string GetFormattedBriefcaseValue(GameManager gameManager, int idToGet)
         {
             if (idToGet == gameManager.PlayerSelectedStartingCase)
@@ -28,7 +23,7 @@ namespace DealOrNoDeal.View.DealOrNoDealPageGUIUtilities
                 return gameManager.PlayerSelectedStartingCaseDollarAmount.ToString("C");
             }
 
-            return gameManager.GetBriefcaseValue(idToGet).ToString("C");
+            return gameManager.BriefcaseManager.GetBriefcaseValue(idToGet).ToString("C");
         }
     }
 }

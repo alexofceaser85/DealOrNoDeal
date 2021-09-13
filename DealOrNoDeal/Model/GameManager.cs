@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using DealOrNoDeal.Data;
 using DealOrNoDeal.ErrorMessages;
 
 namespace DealOrNoDeal.Model
@@ -103,19 +101,29 @@ namespace DealOrNoDeal.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameManager" /> class.
-        ///     Precondition: None
-        ///     Postcondition:
-        ///     this.RoundManager = new RoundManager(casesToOpenForEachRound)
-        ///     AND this.BriefcaseManager = new BriefcaseManager(briefcaseDollarAmounts)
-        ///     AND this.Banker == new Banker()
-        ///     AND this.IsSelectingStartingCase = true
-        ///     AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
+        /// Initializes a new instance of the <see cref="GameManager" /> class.
+        /// Precondition:
+        /// casesToOpenForEachRound != null
+        /// dollarAmountsForEachRound != null
+        /// Postcondition:
+        /// this.RoundManager = new RoundManager(casesToOpenForEachRound)
+        /// AND this.BriefcaseManager = new BriefcaseManager(briefcaseDollarAmounts)
+        /// AND this.Banker == new Banker()
+        /// AND this.IsSelectingStartingCase = true
+        /// AND this.PlayerSelectedStartingCase == InitialPlayerSelectedStartingCase;
         /// </summary>
         /// <param name="casesToOpenForEachRound">The cases than can be opened for each round</param>
         /// <param name="dollarAmountsForEachRound">The dollar amounts of the cases</param>
         public GameManager(IList<int> casesToOpenForEachRound, IList<int> dollarAmountsForEachRound)
         {
+            if (casesToOpenForEachRound == null)
+            {
+                throw new ArgumentException(GameManagerErrorMessages.ShouldNotAllowNullCasesToOpenForEachRound);
+            }
+            if (dollarAmountsForEachRound == null)
+            {
+                throw new ArgumentException(GameManagerErrorMessages.ShouldNotAllowNullDollarAmountsForEachRound);
+            }
             this.RoundManager = new RoundManager(casesToOpenForEachRound);
             this.BriefcaseManager = new BriefcaseManager(dollarAmountsForEachRound);
             this.Banker = new Banker();
@@ -127,25 +135,12 @@ namespace DealOrNoDeal.Model
         #endregion
 
         #region Methods
-
         /// <summary>
-        ///     Gets the briefcase value.
-        ///     Precondition: None
-        ///     Postcondition: None
-        /// </summary>
-        /// <param name="briefcaseIdToGet">The briefcase identifier to get.</param>
-        /// <returns>
-        ///     the dollar amount of the briefcase that has been selected, -1 if the briefcase Id is not present in the briefcases
-        /// </returns>
-        public int GetBriefcaseValue(int briefcaseIdToGet)
-        {
-            return this.BriefcaseManager.GetBriefcaseValue(briefcaseIdToGet);
-        }
-
-        /// <summary>
-        ///     Removes the specified briefcase from play.
-        ///     Precondition: None
-        ///     Postcondition: None
+        /// Removes the specified briefcase from play.
+        /// Precondition: None
+        /// Postcondition:
+        /// this.BriefcaseManager.Count == this.BriefcaseManager.Count@prev - 1
+        /// AND this.RoundManager == this.RoundManager@prev - 1
         /// </summary>
         /// <param name="id">The id of the briefcase to remove from play.</param>
         /// <returns>Dollar amount stored in the case, or -1 if case not found.</returns>
@@ -158,28 +153,15 @@ namespace DealOrNoDeal.Model
         }
 
         /// <summary>
-        ///     Gets the banker offer
-        ///     Precondition: None
-        ///     Postcondition: None
+        /// Gets the banker offer
+        /// Precondition: None
+        /// Postcondition: None
         /// </summary>
         /// <returns>The current banker offer</returns>
-        public int GetOffer()
+        public double GetOffer()
         {
-            var bankerOffer = this.Banker.CalculateOffer(this.BriefcaseManager.Briefcases, this.RoundManager.CasesAvailableForNextRound);
-            return bankerOffer;
+            return this.Banker.CalculateOffers(this.BriefcaseManager.Briefcases, this.RoundManager.CasesAvailableForNextRound);
         }
-
-        /// <summary>
-        ///     Moves to next round by incrementing Round property and setting
-        ///     initial number of cases for that round
-        ///     Precondition: None
-        ///     Postcondition: None
-        /// </summary>
-        public void MoveToNextRound()
-        {
-            this.RoundManager.MoveToNextRound();
-        }
-
         #endregion
     }
 }

@@ -81,5 +81,13 @@
       <RootProperty Name="Source" />
     </RootType>
     <RootType FullName="DealOrNoDeal.View.DealOrNoDealPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ContentDialog">
+      <RootProperty Name="Title" />
+      <RootProperty Name="PrimaryButtonText" />
+      <RootProperty Name="SecondaryButtonText" />
+      <RootEvent Name="PrimaryButtonClick" />
+      <RootEvent Name="SecondaryButtonClick" />
+    </RootType>
+    <RootType FullName="DealOrNoDeal.View.Dialogs.AskUserToPlayAgain" />
   </Roots.RootTypes>
 </Roots>
